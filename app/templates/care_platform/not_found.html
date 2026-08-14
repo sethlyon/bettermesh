@@ -1,0 +1,8 @@
+{% extends "care_platform/base.html" %}
+{% block content %}
+<div class="panel">
+  <h1 style="margin-top:0;">Patient not found</h1>
+  <p class="muted">No chart matches that ID at {{ hospice.name }}.</p>
+  <a class="btn secondary" href="/care-platform/{{ hospice_qs }}">Back to roster</a>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ hospice.name }} — {{ hospice.tagline }}</title>
+  <style>
+    :root {
+      --bg: {{ hospice.bg }};
+      --panel: {{ hospice.panel }};
+      --ink: {{ hospice.ink }};
+      --accent: {{ hospice.accent }};
+      --accent-ink: {{ hospice.accent_ink }};
+      --muted: {{ hospice.muted }};
+      --line: {{ hospice.line }};
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Iowan Old Style", Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); }
+    header.topbar {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 28px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--line);
+    }
+    .mark { height: 72px; width: auto; flex-shrink: 0; }
+    .brand-block .tagline { font-size: 12px; color: var(--muted); letter-spacing: 0.03em; text-transform: uppercase; }
+    main { max-width: 860px; margin: 0 auto; padding: 28px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 22px 26px;
+    }
+    .muted { color: var(--muted); }
+    .btn {
+      display: inline-block;
+      background: var(--accent); color: var(--accent-ink);
+      border: none; border-radius: 7px;
+      padding: 10px 18px; font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer; text-decoration: none;
+    }
+    .btn.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
+    th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    input, select {
+      font-family: inherit; font-size: 14px;
+      border: 1px solid var(--line); border-radius: 6px;
+      padding: 8px 10px; background: #fff; color: var(--ink);
+    }
+    .footer-note { margin-top: 24px; font-size: 12px; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <img class="mark" src="/static/logos/{{ hospice.logo }}" alt="{{ hospice.name }}">
+    <div class="brand-block">
+      <div class="tagline">{{ hospice.tagline }}</div>
+    </div>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <p class="footer-note">Synthetic demo data — no real patient information. Part of the BetterMesh integration demo.</p>
+</body>
+</html>

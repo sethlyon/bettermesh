@@ -1,0 +1,25 @@
+{% extends "care_platform/base.html" %}
+{% block content %}
+<h1 style="margin-top:0;">Patient Roster</h1>
+<p class="muted">Select a patient to open their chart.</p>
+
+<div class="panel" style="padding: 0; overflow: hidden;">
+  <table>
+    <thead>
+      <tr><th>Name</th><th>MRN</th><th>Diagnosis</th><th>Care Level</th><th>Case Manager</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for p in patients %}
+      <tr>
+        <td><strong>{{ p.name }}</strong><br><span class="muted">{{ p.id }}</span></td>
+        <td>{{ p.mrn }}</td>
+        <td>{{ p.primary_diagnosis }}</td>
+        <td>{{ p.care_level }}</td>
+        <td>{{ p.case_manager }}</td>
+        <td><a class="btn secondary" href="/care-platform/patients/{{ p.id }}{{ hospice_qs }}">Open chart</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

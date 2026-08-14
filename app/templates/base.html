@@ -32,8 +32,20 @@
     {% endif %}
   </header>
 
-  <main id="board">
+  <main id="board" data-highlight-patient="{{ highlight_patient or '' }}">
     {% block board %}{% endblock %}
   </main>
+
+  <script>
+    (function () {
+      var board = document.getElementById('board');
+      var target = board && board.dataset.highlightPatient;
+      if (!target) return;
+      var card = board.querySelector('.hcard[data-patient="' + target + '"]');
+      if (!card) return;
+      card.classList.add('hcard-highlight');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    })();
+  </script>
 </body>
 </html>

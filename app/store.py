@@ -177,7 +177,7 @@ def seed() -> None:
         Order(
             id="DME-10231",
             patient_id="PT-88421",
-            hospice="Sample Hospice A",
+            hospice="Anchorpoint Hospice Partners",
             equipment_code="E0250",
             order_type="Admission",
             status=ORDERED,
@@ -188,7 +188,7 @@ def seed() -> None:
         Order(
             id="DME-10198",
             patient_id="PT-88190",
-            hospice="Sample Hospice B",
+            hospice="Cedar Ridge Hospice & Home Care",
             equipment_code="E1130",
             order_type="Routine",
             status=DISPATCHED,
@@ -201,7 +201,7 @@ def seed() -> None:
         Order(
             id="DME-10305",
             patient_id="PT-88502",
-            hospice="Sample Hospice A",
+            hospice="Anchorpoint Hospice Partners",
             equipment_code="E0601",
             order_type="STAT",
             status=IN_TRANSIT,
@@ -214,7 +214,7 @@ def seed() -> None:
         Order(
             id="DME-10087",
             patient_id="PT-87950",
-            hospice="Sample Hospice C",
+            hospice="Thistlemoor Hospice",
             equipment_code="E0250",
             order_type="Admission",
             status=DELIVERED,
@@ -227,7 +227,7 @@ def seed() -> None:
         Order(
             id="DME-10412",
             patient_id="PT-87720",
-            hospice="Sample Hospice B",
+            hospice="Cedar Ridge Hospice & Home Care",
             equipment_code="E0250",
             order_type="Pickup",
             status=PICKUP_REQUESTED,
@@ -240,7 +240,7 @@ def seed() -> None:
         Order(
             id="DME-10500",
             patient_id="PT-88710",
-            hospice="Sample Hospice A",
+            hospice="Anchorpoint Hospice Partners",
             equipment_code="E0601",
             order_type="STAT",
             status=ORDERED,

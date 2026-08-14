@@ -5,6 +5,7 @@
   <p class="hint">Use a demo account to continue.</p>
   {% if error %}<div class="flash flash-error">{{ error }}</div>{% endif %}
   <form method="post" action="/login" class="login-form">
+    <input type="hidden" name="next" value="{{ next or '/' }}">
     <label class="login-field">
       <span>Username</span>
       <input type="text" name="username" autocomplete="username" autofocus required>

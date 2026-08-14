@@ -1,0 +1,217 @@
+{% extends "care_platform/base.html" %}
+{% block content %}
+<a class="muted" href="/care-platform/{{ hospice_qs }}">&larr; Back to roster</a>
+<h1 style="margin-bottom:4px;">{{ patient.name }}</h1>
+<p class="muted" style="margin-top:0;">{{ patient.id }} &middot; MRN {{ patient.mrn }} &middot; DOB {{ patient.dob }}</p>
+
+<div class="panel">
+  <table>
+    <tr><th style="width:160px;">Status</th><td id="patient-status-cell">{{ patient.status }}</td></tr>
+    <tr><th>Admission date</th><td>{{ patient.admission_date }}</td></tr>
+    <tr><th>Primary diagnosis</th><td>{{ patient.primary_diagnosis }}</td></tr>
+    <tr><th>Level of care</th><td>{{ patient.care_level }}</td></tr>
+    <tr><th>Case manager</th><td>{{ patient.case_manager }}</td></tr>
+    <tr><th>Attending physician</th><td>{{ patient.physician }}</td></tr>
+  </table>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h2 style="margin-top:0;">Care Plan &mdash; Equipment on Record</h2>
+  {% if patient.equipment_needs %}
+  <table>
+    <thead><tr><th>Equipment</th><th>Ordered by</th><th>Date</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for need in patient.equipment_needs %}
+      <tr>
+        <td>{{ need.name }} <span class="muted">({{ need.code }})</span>{% if need.urgent %} &middot; <strong>STAT</strong>{% endif %}</td>
+        <td>{{ need.ordered_by }}</td>
+        <td>{{ need.ordered_date }}</td>
+        <td>{% if need.dispatched %}Dispatched to BetterMesh{% else %}Not yet dispatched{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="muted">No equipment on the care plan.</p>
+  {% endif %}
+</div>
+
+<div class="panel" id="live-status-panel" style="margin-top:16px;">
+  <h2 style="margin-top:0;">BetterMesh Status</h2>
+  <div id="live-status" class="muted">Checking BetterMesh&hellip;</div>
+</div>
+
+{# Every site has the same three actions available — which one gets used in a
+   given demo is a choice of which patient/moment you're walking through, not
+   a difference in what the system can do. #}
+
+<div class="panel" id="dispatch-panel" style="margin-top:16px; display:none;">
+  <h2 style="margin-top:0;">Dispatch Equipment</h2>
+  <p class="muted" style="margin-top:-8px;">Sends the care plan's pending equipment need straight to BetterMesh — no re-typing.</p>
+  <div id="dispatch-form">
+    <label class="muted" style="font-size:13px; display:block; margin-bottom:4px;">Target delivery deadline</label>
+    <input type="datetime-local" id="target-date" value="{{ default_target_stat if patient.equipment_needs | selectattr('urgent') | list else default_target }}" style="margin-bottom:14px;">
+    <div id="equipment-rows"></div>
+    <button type="button" class="btn secondary" id="add-row" style="margin-top:6px;">+ Add equipment</button>
+    <div style="margin-top:18px;"><button type="button" class="btn" id="dispatch-btn">Dispatch Equipment</button></div>
+  </div>
+  <div id="dispatch-success" style="display:none;">
+    <p style="color: var(--accent); font-weight:600;">&#10003; Sent to BetterMesh.</p>
+    <a class="btn" id="status-link" href="{{ status_url }}">Equipment Status &rarr;</a>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h2 style="margin-top:0;">Order Equipment</h2>
+  <p class="muted" style="margin-top:-8px;">For a need that's come up since admission — add anything, not just what's already on the care plan.</p>
+  <div id="menu-rows">
+    {% for code, name in equipment_options.items() %}
+    <label style="display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); cursor:pointer;">
+      <input type="checkbox" class="menu-check" value="{{ code }}"> {{ name }} <span class="muted">({{ code }})</span>
+    </label>
+    {% endfor %}
+  </div>
+  <label class="muted" style="font-size:13px; display:block; margin:14px 0 4px;">Needed by</label>
+  <input type="datetime-local" id="menu-target-date" value="{{ default_target }}" style="margin-bottom:14px;">
+  <button type="button" class="btn" id="menu-submit-btn">Submit Request to BetterMesh</button>
+  <div id="menu-success" style="display:none; margin-top:14px;">
+    <p style="color: var(--accent); font-weight:600;">&#10003; Sent to BetterMesh.</p>
+    <a class="btn" id="menu-status-link" href="{{ status_url }}">Equipment Status &rarr;</a>
+  </div>
+</div>
+
+<div class="panel" style="margin-top:16px;">
+  <h2 style="margin-top:0;">Patient Status</h2>
+  <label class="muted" style="font-size:13px; display:block; margin-bottom:4px;">Status</label>
+  <select id="status-select" style="margin-bottom:16px;">
+    <option value="Active in Care" {{ 'selected' if patient.status == 'Active in Care' }}>Active in Care</option>
+    <option value="Deceased" {{ 'selected' if patient.status == 'Deceased' }}>Deceased</option>
+  </select>
+  <div><button type="button" class="btn" id="save-status-btn">Save</button></div>
+</div>
+
+<div id="pickup-modal" style="display:none; position:fixed; inset:0; background:rgba(20,15,20,0.5); align-items:center; justify-content:center; z-index:50;">
+  <div class="panel" style="max-width:420px; margin:0 20px;">
+    <h2 style="margin-top:0;">Equipment Pickup Dispatched</h2>
+    <p id="pickup-details" class="muted"></p>
+    <div style="display:flex; gap:10px; margin-top:18px;">
+      <a class="btn" id="pickup-status-link" href="{{ status_url }}">Equipment Status &rarr;</a>
+      <button type="button" class="btn secondary" id="pickup-modal-close">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var API_BASE = {{ api_base | tojson }};
+  var SECRET = {{ webhook_secret | tojson }};
+  var PATIENT_ID = {{ patient.id | tojson }};
+  var HOSPICE_NAME = {{ hospice.name | tojson }};
+  var STATUS_URL = {{ status_url | tojson }};
+  var EQUIPMENT_OPTIONS = {{ equipment_options | tojson }};
+  var PENDING_NEEDS = {{ pending_needs | tojson }};
+  var HAS_URGENT = PENDING_NEEDS.some(function (n) { return n.urgent; });
+
+  function post(path, body) {
+    return fetch(API_BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Webhook-Secret': SECRET },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json(); });
+  }
+
+  function refreshStatus() {
+    var el = document.getElementById('live-status');
+    fetch(API_BASE + '/api/patients/' + PATIENT_ID + '/orders', {
+      headers: { 'X-Webhook-Secret': SECRET }
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      var orders = data.orders || [];
+      if (orders.length === 0) { el.textContent = 'No orders in BetterMesh yet for this patient.'; return; }
+      el.innerHTML = orders.map(function (o) {
+        var risk = o.at_risk ? ' — AT RISK' : '';
+        var pk = o.is_pickup ? ' (pickup)' : '';
+        return o.equipment_name + pk + ': ' + o.status + (o.vendor ? ' (' + o.vendor + ')' : '') + risk;
+      }).join('<br>');
+    }).catch(function () { el.textContent = 'Could not reach BetterMesh right now.'; });
+  }
+
+  // ---------------- Dispatch panel (pre-filled from care-plan needs) ----------------
+  var rowsEl = document.getElementById('equipment-rows');
+  function equipSelect(selected) {
+    var opts = Object.keys(EQUIPMENT_OPTIONS).map(function (code) {
+      return '<option value="' + code + '"' + (code === selected ? ' selected' : '') + '>' + EQUIPMENT_OPTIONS[code] + '</option>';
+    }).join('');
+    return '<select class="equip-row">' + opts + '</select>';
+  }
+  function addRow(selected) {
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex; gap:8px; align-items:center; margin-bottom:8px;';
+    row.innerHTML = equipSelect(selected || '') + '<button type="button" class="btn secondary" style="padding:6px 10px;">&times;</button>';
+    row.querySelector('button').onclick = function () { row.remove(); };
+    rowsEl.appendChild(row);
+  }
+  document.getElementById('add-row').onclick = function () { addRow(); };
+
+  if (PENDING_NEEDS.length) {
+    PENDING_NEEDS.forEach(function (n) { addRow(n.code); });
+    document.getElementById('dispatch-panel').style.display = 'block';
+  }
+
+  document.getElementById('dispatch-btn').onclick = function () {
+    var codes = Array.prototype.slice.call(rowsEl.querySelectorAll('.equip-row')).map(function (s) { return s.value; });
+    var target = document.getElementById('target-date').value;
+    if (!codes.length || !target) return;
+    var btn = this; btn.disabled = true; btn.textContent = 'Dispatching…';
+    post('/webhook/pre-discharge-order', {
+      patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
+      order_type: HAS_URGENT ? 'STAT' : 'Admission',
+      equipment_codes: codes, target_date: target
+    }).then(function () {
+      document.getElementById('dispatch-form').style.display = 'none';
+      document.getElementById('dispatch-success').style.display = 'block';
+      refreshStatus();
+    });
+  };
+
+  // ---------------- Order Equipment (a-la-carte menu) ----------------
+  document.getElementById('menu-submit-btn').onclick = function () {
+    var codes = Array.prototype.slice.call(document.querySelectorAll('.menu-check:checked')).map(function (c) { return c.value; });
+    var target = document.getElementById('menu-target-date').value;
+    if (!codes.length || !target) return;
+    var btn = this; btn.disabled = true; btn.textContent = 'Submitting…';
+    post('/webhook/pre-discharge-order', {
+      patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
+      order_type: 'Admission', equipment_codes: codes, target_date: target
+    }).then(function () {
+      document.getElementById('menu-success').style.display = 'block';
+      btn.style.display = 'none';
+      refreshStatus();
+    });
+  };
+
+  // ---------------- Patient Status -> mark deceased -> pickup popup ----------------
+  document.getElementById('save-status-btn').onclick = function () {
+    var status = document.getElementById('status-select').value;
+    document.getElementById('patient-status-cell').textContent = status;
+    if (status !== 'Deceased') return;
+
+    var btn = this; btn.disabled = true; btn.textContent = 'Saving…';
+    post('/webhook/mark-deceased', { patient_id: PATIENT_ID }).then(function (data) {
+      btn.disabled = false; btn.textContent = 'Save';
+      var pickups = data.pickups || [];
+      var details = pickups.length
+        ? pickups.map(function (p) { return p.equipment_name + ' — routed to ' + (p.vendor || 'the network'); }).join('<br>')
+        : 'No delivered equipment on file to route for pickup.';
+      document.getElementById('pickup-details').innerHTML = details;
+      document.getElementById('pickup-modal').style.display = 'flex';
+      refreshStatus();
+    });
+  };
+  document.getElementById('pickup-modal-close').onclick = function () {
+    document.getElementById('pickup-modal').style.display = 'none';
+  };
+
+  refreshStatus();
+})();
+</script>
+{% endblock %}

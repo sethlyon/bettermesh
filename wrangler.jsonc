@@ -4,7 +4,10 @@
   "compatibility_date": "2026-08-14",
   "compatibility_flags": ["nodejs_compat"],
   "routes": [
-    { "pattern": "bettermesh.theslyon.com", "custom_domain": true }
+    { "pattern": "bettermesh.theslyon.com", "custom_domain": true },
+    { "pattern": "anchorpoint.theslyon.com", "custom_domain": true },
+    { "pattern": "cedarridge.theslyon.com", "custom_domain": true },
+    { "pattern": "thistlemoor.theslyon.com", "custom_domain": true }
   ],
   "containers": [
     {

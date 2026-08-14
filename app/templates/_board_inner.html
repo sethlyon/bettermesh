@@ -4,9 +4,16 @@
 {# ---------------- Hospice case manager view ---------------- #}
 <section class="panel">
   <div class="toolbar">
-    <form class="intake" hx-post="/orders" hx-target="#board" hx-swap="innerHTML">
-      <input class="intake-text" type="text" name="text"
-             placeholder="hospital bed for PT-88421 by tomorrow 2pm" autocomplete="off">
+    <form class="intake" hx-post="/orders" hx-target="#board" hx-swap="innerHTML"
+          title="Manual fallback — for the rare need not already on a discharge record. Most orders arrive automatically from a hospice's own system; see Dispatch equipment on a patient's record there.">
+      <select class="intake-equipment" name="equipment_code" required>
+        <option value="" disabled selected>Equipment</option>
+        {% for code, name in equipment.items() %}
+        <option value="{{ code }}">{{ name }}</option>
+        {% endfor %}
+      </select>
+      <input class="intake-patient" type="text" name="patient_id" placeholder="PT-88421" autocomplete="off" required>
+      <input class="intake-target" type="datetime-local" name="target_date" required>
       <button type="submit">Place order</button>
     </form>
     <form class="death" hx-post="/patients/deceased" hx-target="#board" hx-swap="innerHTML">
@@ -26,7 +33,7 @@
       {% if not has_attention %}<p class="empty">Nothing needs attention right now.</p>{% endif %}
       <div class="hgrid">
         {% for o in orders if o.at_risk or o.is_open %}
-        <div class="hcard {{ 'risk' if o.at_risk else 'awaiting' }}">
+        <div class="hcard {{ 'risk' if o.at_risk else 'awaiting' }}" data-patient="{{ o.patient_id }}">
           <div class="hcard-head">
             <span class="equip">{{ o.equipment_name }}</span>
             {% if o.at_risk %}<span class="badge badge-risk">At risk</span>
@@ -63,7 +70,7 @@
       <p class="empty">No active orders.</p>{% endif %}
       <div class="hgrid">
         {% for o in orders if o.vendor and not o.at_risk and o.status not in ['Delivered','Picked Up'] %}
-        <div class="hcard {{ 'pickup' if o.is_pickup else '' }}">
+        <div class="hcard {{ 'pickup' if o.is_pickup else '' }}" data-patient="{{ o.patient_id }}">
           <div class="hcard-head">
             <span class="equip">{{ o.equipment_name }}</span>
             <span class="badge {{ 'badge-pickup' if o.is_pickup else '' }}">{{ o.status }}</span>
@@ -85,7 +92,7 @@
       <p class="empty">Nothing completed yet.</p>{% endif %}
       <div class="hgrid">
         {% for o in orders if o.status in ['Delivered','Picked Up'] %}
-        <div class="hcard closed">
+        <div class="hcard closed" data-patient="{{ o.patient_id }}">
           <div class="hcard-head">
             <span class="equip">{{ o.equipment_name }}</span>
             <span class="badge">{{ o.status }}</span>
