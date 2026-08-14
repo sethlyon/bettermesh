@@ -140,6 +140,7 @@
           {% if f.order.address %}<br><span class="muted">Deliver to</span> {{ f.order.address }}{% endif %}
           {% if f.order.contact_phone %} · {{ f.order.contact_phone }}{% endif %}
           {% if f.order.equipment_notes %}<br><span class="muted">Notes</span> {{ f.order.equipment_notes }}{% endif %}
+          {% if not f.order.consent_on_file %}<br><span class="muted">&#9888; consent not on file</span>{% endif %}
         </div>
         <div class="card-actions">
           <form hx-post="/orders/{{ f.order.id }}/accept" hx-target="#board" hx-swap="innerHTML">
@@ -171,6 +172,7 @@
           {% if o.address %}<br><span class="muted">Deliver to</span> {{ o.address }}{% endif %}
           {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}
           {% if o.equipment_notes %}<br><span class="muted">Notes</span> {{ o.equipment_notes }}{% endif %}
+          {% if not o.consent_on_file %}<br><span class="muted">&#9888; consent not on file</span>{% endif %}
         </div>
         <div class="card-actions">
           <form hx-post="/orders/{{ o.id }}/deliver" hx-target="#board" hx-swap="innerHTML">
@@ -197,6 +199,7 @@
           <span class="muted">Patient</span> <span class="mono">{{ o.patient_id }}</span><br>
           {% if o.address %}<span class="muted">Pick up at</span> {{ o.address }}
           {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}<br>{% endif %}
+          {% if not o.consent_on_file %}<span class="muted">&#9888; consent not on file</span><br>{% endif %}
           {% if o.log %}<span class="log">{{ o.log[-1] }}</span>{% endif %}
         </div>
         <div class="card-actions">

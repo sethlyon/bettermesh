@@ -344,6 +344,7 @@ def _order_json(o: Order) -> dict:
         "address": o.address,
         "contact_phone": o.contact_phone,
         "equipment_notes": o.equipment_notes,
+        "consent_on_file": o.consent_on_file,
     }
 
 
@@ -381,6 +382,7 @@ async def webhook_pre_discharge_order(request: Request):
     address = str(body.get("address", "")).strip()
     contact_phone = str(body.get("contact_phone", "")).strip()
     equipment_notes = str(body.get("equipment_notes", "")).strip()
+    consent_on_file = bool(body.get("consent_on_file", False))
     try:
         target = datetime.fromisoformat(body["target_date"]) if body.get("target_date") else None
     except (ValueError, KeyError):
@@ -415,6 +417,7 @@ async def webhook_pre_discharge_order(request: Request):
             address=address,
             contact_phone=contact_phone,
             equipment_notes=equipment_notes,
+            consent_on_file=consent_on_file,
         )
         order.log.append(f"received via pre-discharge webhook from {hospice}")
         store.add(order)

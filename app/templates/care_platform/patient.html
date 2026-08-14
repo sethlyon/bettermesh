@@ -60,6 +60,10 @@
     <input type="datetime-local" id="target-date" value="{{ default_target_stat if patient.equipment_needs | selectattr('urgent') | list else default_target }}" style="margin-bottom:14px;">
     <div id="equipment-rows"></div>
     <button type="button" class="btn secondary" id="add-row" style="margin-top:6px;">+ Add equipment</button>
+    <label style="display:flex; align-items:center; gap:8px; margin-top:14px; cursor:pointer;">
+      <input type="checkbox" id="dispatch-consent" {{ 'checked' if patient.consent_on_file }}>
+      <span class="muted" style="font-size:13px;">Patient/family has consented to sharing info with the DME vendor</span>
+    </label>
     <div style="margin-top:18px;"><button type="button" class="btn" id="dispatch-btn">Dispatch Equipment</button></div>
   </div>
   <div id="dispatch-success" style="display:none;">
@@ -80,6 +84,10 @@
   </div>
   <label class="muted" style="font-size:13px; display:block; margin:14px 0 4px;">Needed by</label>
   <input type="datetime-local" id="menu-target-date" value="{{ default_target }}" style="margin-bottom:14px;">
+  <label style="display:flex; align-items:center; gap:8px; margin-bottom:14px; cursor:pointer;">
+    <input type="checkbox" id="menu-consent" {{ 'checked' if patient.consent_on_file }}>
+    <span class="muted" style="font-size:13px;">Patient/family has consented to sharing info with the DME vendor</span>
+  </label>
   <button type="button" class="btn" id="menu-submit-btn">Submit Request to BetterMesh</button>
   <div id="menu-success" style="display:none; margin-top:14px;">
     <p style="color: var(--accent); font-weight:600;">&#10003; Sent to BetterMesh.</p>
@@ -175,7 +183,8 @@
       patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
       order_type: HAS_URGENT ? 'STAT' : 'Admission',
       equipment_codes: codes, target_date: target,
-      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE
+      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
+      consent_on_file: document.getElementById('dispatch-consent').checked
     }).then(function () {
       document.getElementById('dispatch-form').style.display = 'none';
       document.getElementById('dispatch-success').style.display = 'block';
@@ -192,7 +201,8 @@
     post('/webhook/pre-discharge-order', {
       patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
       order_type: 'Admission', equipment_codes: codes, target_date: target,
-      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE
+      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
+      consent_on_file: document.getElementById('menu-consent').checked
     }).then(function () {
       document.getElementById('menu-success').style.display = 'block';
       btn.style.display = 'none';
