@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block board %}
+<section class="panel">
+  <div class="toolbar">
+    <h1 style="margin: 0; font-size: 20px; color: var(--navy);">All Dispatches &amp; Pickups</h1>
+    <a class="btn-link reset" href="/">&larr; Back to board</a>
+  </div>
+
+  <form class="filters" method="get" action="/dispatches">
+    <div class="filter-group">
+      <label for="patient_id">Patient</label>
+      <select name="patient_id" id="patient_id">
+        <option value="">All patients</option>
+        {% for pid in patient_ids %}
+        <option value="{{ pid }}" {{ 'selected' if pid == selected_patient }}>{{ pid }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Equipment type</label>
+      <div class="filter-checks">
+        {% for code, name in equipment.items() %}
+        <label>
+          <input type="checkbox" name="equipment_code" value="{{ code }}" {{ 'checked' if code in selected_equipment }}>
+          {{ name }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button type="submit">Apply filters</button>
+      <a class="btn-link" href="/dispatches">Clear</a>
+    </div>
+  </form>
+
+  {% if not orders %}
+  <p class="empty">No dispatches match these filters.</p>
+  {% else %}
+  <table class="dispatch-table">
+    <thead>
+      <tr>
+        <th>Order</th>
+        <th>Patient</th>
+        <th>Hospice</th>
+        <th>Equipment</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Vendor</th>
+        <th>Target</th>
+        <th>ETA</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for o in orders %}
+      <tr class="{{ 'at-risk' if o.at_risk }}">
+        <td class="mono">{{ o.id }}</td>
+        <td>{{ o.patient_id }}</td>
+        <td>{{ o.hospice }}</td>
+        <td>{{ o.equipment_name }} <span class="ecode">{{ o.equipment_code }}</span></td>
+        <td>
+          {% if o.is_pickup %}<span class="badge badge-pickup">Pickup</span>
+          {% else %}{{ o.order_type }}{% endif %}
+        </td>
+        <td>
+          {{ o.status }}{% if o.at_risk %} <span class="badge badge-risk">At risk</span>{% endif %}
+        </td>
+        <td>{{ o.vendor or '—' }}</td>
+        <td>{{ o.target_date | t }}</td>
+        <td>{{ o.eta | t }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}

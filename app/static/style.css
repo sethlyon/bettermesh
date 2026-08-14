@@ -227,5 +227,56 @@ button.redispatch:hover { background: #b83842; }
 
 @media (max-width: 900px) { .columns, .columns.three { grid-template-columns: 1fr; } }
 
+.btn-link {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.btn-link:hover { background: #f1f5f9; }
+
+.filters {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.filter-group { display: flex; flex-direction: column; gap: 6px; }
+.filter-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
+.filter-checks { display: flex; gap: 12px; flex-wrap: wrap; }
+.filter-checks label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; text-transform: none; letter-spacing: normal; color: var(--text);
+  cursor: pointer;
+}
+.filters select {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 180px;
+}
+.filters .filter-actions { align-self: flex-end; display: flex; gap: 8px; }
+
+table.dispatch-table { width: 100%; border-collapse: collapse; }
+table.dispatch-table th, table.dispatch-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+table.dispatch-table th {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted);
+}
+table.dispatch-table tr.at-risk { background: var(--risk-bg); }
+
 
 

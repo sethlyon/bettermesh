@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Optional
 from urllib.parse import urlencode
 
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Query, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -150,6 +150,44 @@ def index(request: Request, patient: Optional[str] = None):
         return RedirectResponse(f"/login?{urlencode({'next': next_path})}", status_code=303)
     return templates.TemplateResponse(
         "board.html", _board_ctx(request, user, highlight_patient=(patient or "").strip().upper())
+    )
+
+
+@app.get("/dispatches", response_class=HTMLResponse)
+def all_dispatches(
+    request: Request,
+    patient_id: str = "",
+    equipment_code: list[str] = Query(default=[]),
+):
+    """Flat, filterable view of every DME dispatch and pickup — a companion to
+    the kanban board, which groups by status/attention rather than letting a
+    hospice browse or filter its full order history directly."""
+    user = _current_user(request)
+    if user is None:
+        return RedirectResponse(f"/login?{urlencode({'next': str(request.url.path)})}", status_code=303)
+    if user.role != "hospice":
+        return RedirectResponse("/", status_code=303)
+
+    all_orders = store.all_orders()
+    orders = all_orders
+    if patient_id:
+        orders = [o for o in orders if o.patient_id == patient_id]
+    if equipment_code:
+        orders = [o for o in orders if o.equipment_code in equipment_code]
+    orders = sorted(orders, key=lambda o: o.ordered_at, reverse=True)
+
+    patient_ids = sorted({o.patient_id for o in all_orders})
+    return templates.TemplateResponse(
+        "dispatches.html",
+        {
+            "request": request,
+            "user": user,
+            "orders": orders,
+            "patient_ids": patient_ids,
+            "equipment": EQUIPMENT,
+            "selected_patient": patient_id,
+            "selected_equipment": equipment_code,
+        },
     )
 
 
