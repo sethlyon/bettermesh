@@ -65,9 +65,13 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 }
 
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
-.intake { display: flex; gap: 8px; flex: 1; min-width: 320px; }
+.intake { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .intake-text { flex: 1; }
-.death { display: flex; gap: 8px; }
+.intake-equipment { width: 150px; }
+.intake-patient { width: 130px; }
+.intake-target { width: 190px; }
+.death { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.death-input { width: 130px; }
 .reset { margin-left: auto; }
 .hint { color: var(--muted); font-size: 14px; }
 

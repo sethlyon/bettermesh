@@ -13,6 +13,7 @@ from typing import Optional
 from urllib.parse import urlencode
 
 from fastapi import FastAPI, Form, Query, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -39,6 +40,24 @@ app.include_router(care_platform_router)
 # environment for anything beyond local demo use (see .env.example).
 SESSION_SECRET = os.environ.get("SESSION_SECRET", "dev-insecure-secret-change-me")
 app.add_middleware(SessionMiddleware, secret_key=SESSION_SECRET)
+
+# The care-platform mock hospice sites (care_platform.py) live on separate
+# subdomains and call the /webhook/* and /api/* endpoints below via browser
+# fetch() — without CORS those cross-origin calls are blocked by the browser
+# even though a plain curl/server-to-server call never hits this at all,
+# which is exactly why this gap survived earlier curl-only testing.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://anchorpoint.theslyon.com",
+        "https://cedarridge.theslyon.com",
+        "https://thistlemoor.theslyon.com",
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+    ],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "X-Webhook-Secret"],
+)
 
 # Seed at import so the board is populated however the app is launched.
 store.seed()
