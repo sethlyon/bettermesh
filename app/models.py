@@ -21,22 +21,18 @@ ACTIVE_DELIVERY_STATES = {ORDERED, DISPATCHED, IN_TRANSIT}
 CLOSED_STATES = {DELIVERED, PICKED_UP}
 
 
-# HCPCS E-code -> human label. Used by the NL intake parser and the UI.
+# HCPCS E-code -> human label. Used by the UI (dropdowns/menus render this dict
+# directly). Real, commonly billed home-hospice DME codes.
 EQUIPMENT = {
     "E0250": "Hospital Bed",
     "E1130": "Wheelchair",
     "E0601": "CPAP / Oxygen Concentrator",
-}
-
-# Free-text keyword -> HCPCS E-code, for natural-language order intake.
-KEYWORD_TO_CODE = {
-    "hospital bed": "E0250",
-    "bed": "E0250",
-    "wheelchair": "E1130",
-    "chair": "E1130",
-    "cpap": "E0601",
-    "oxygen": "E0601",
-    "concentrator": "E0601",
+    "E0143": "Walker, Folding (Wheeled)",
+    "E0163": "Bedside Commode",
+    "E0570": "Nebulizer",
+    "E0305": "Hospital Bed Side Rails",
+    "E0630": "Patient Lift, Hydraulic",
+    "A6196": "Wound Care Dressing, Alginate",
 }
 
 
@@ -81,6 +77,10 @@ class Order:
     address: str = ""
     contact_phone: str = ""
     equipment_notes: str = ""
+    # Whether the patient/family has consented to sharing their info with the
+    # DME vendor fulfilling this order. Surfaced to vendors so they know when
+    # it's missing; defaults False (opt-in, not assumed).
+    consent_on_file: bool = False
 
     @property
     def equipment_name(self) -> str:

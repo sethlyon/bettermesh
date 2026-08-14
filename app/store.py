@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS orders (
     log TEXT NOT NULL,
     address TEXT NOT NULL DEFAULT '',
     contact_phone TEXT NOT NULL DEFAULT '',
-    equipment_notes TEXT NOT NULL DEFAULT ''
+    equipment_notes TEXT NOT NULL DEFAULT '',
+    consent_on_file INTEGER NOT NULL DEFAULT 0
 );
 """
 
@@ -55,8 +56,8 @@ _UPSERT_SQL = """
 INSERT INTO orders (
     id, patient_id, hospice, equipment_code, order_type, status,
     ordered_at, target_date, vendor, eta, is_pickup, log,
-    address, contact_phone, equipment_notes
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    address, contact_phone, equipment_notes, consent_on_file
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     patient_id=excluded.patient_id,
     hospice=excluded.hospice,
@@ -71,7 +72,8 @@ ON CONFLICT(id) DO UPDATE SET
     log=excluded.log,
     address=excluded.address,
     contact_phone=excluded.contact_phone,
-    equipment_notes=excluded.equipment_notes
+    equipment_notes=excluded.equipment_notes,
+    consent_on_file=excluded.consent_on_file
 """
 
 # Process-local cache of live Order objects, mirrored to SQLite. None until
@@ -110,6 +112,7 @@ def _row_to_order(row: tuple) -> Order:
         address,
         contact_phone,
         equipment_notes,
+        consent_on_file,
     ) = row
     return Order(
         id=id_,
@@ -127,6 +130,7 @@ def _row_to_order(row: tuple) -> Order:
         address=address,
         contact_phone=contact_phone,
         equipment_notes=equipment_notes,
+        consent_on_file=bool(consent_on_file),
     )
 
 
@@ -147,6 +151,7 @@ def _order_to_params(order: Order) -> tuple:
         order.address,
         order.contact_phone,
         order.equipment_notes,
+        int(order.consent_on_file),
     )
 
 

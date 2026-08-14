@@ -115,6 +115,9 @@ class Patient:
     contact_phone: str
     equipment_needs: list[EquipmentNeed] = field(default_factory=list)
     status: str = "Active in Care"  # or "Deceased" — Thistlemoor's demo toggles this
+    # Whether the patient/family has consented to sharing their info with a DME
+    # vendor. Demo patients are all treated as already-consented for simplicity.
+    consent_on_file: bool = True
 
 
 def _in(days: int, hour: int = 14, minute: int = 0) -> str:
