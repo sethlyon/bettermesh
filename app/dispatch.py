@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 
 from . import store
 from .models import (
+    CANCELLED,
     DELIVERED,
     IN_TRANSIT,
     ORDERED,
@@ -123,6 +124,23 @@ def rebroadcast(order: Order) -> tuple[bool, str]:
     return True, f"{order.id} re-broadcast to the network; awaiting a vendor to accept."
 
 
+def cancel_order(order: Order) -> tuple[bool, str]:
+    """Cancel an order — a physician change of mind or a hospice-side mistake.
+
+    Refused once the equipment has actually changed hands: a delivered or
+    picked-up order reflects something that already happened in the physical
+    world, which a status flip here can't undo.
+    """
+    if order.status in (DELIVERED, PICKED_UP):
+        return False, f"{order.id} is already {order.status.lower()} and cannot be cancelled."
+    if order.status == CANCELLED:
+        return False, f"{order.id} is already cancelled."
+    prior_status = order.status
+    order.status = CANCELLED
+    order.log.append(f"{_stamp()} cancelled (was {prior_status})")
+    return True, f"{order.id} cancelled."
+
+
 def mark_delivered(order: Order) -> tuple[bool, str]:
     """Dispatcher confirms a delivery landed."""
     if order.is_pickup or order.status == DELIVERED:
@@ -145,13 +163,26 @@ def mark_deceased(patient_id: str) -> tuple[int, list[str]]:
     """Create pickup orders for a deceased patient's delivered equipment.
 
     This is what replaces the after-death phone call: a status change fans out
-    pickup orders into the vendor queue automatically.
+    pickup orders into the vendor queue automatically. Idempotent per source
+    order: a pickup already created for a given original order is tracked via
+    a `source_order:<id>` marker in the pickup's own log (simplest option
+    given the existing data model — no new field), and re-running this for the
+    same patient (double webhook call, double UI click) won't spin up a
+    second pickup for equipment that already has one pending.
     """
+    all_orders = store.all_orders()
+    already_has_pickup: set[str] = set()
+    for o in all_orders:
+        if o.is_pickup:
+            for entry in o.log:
+                if entry.startswith("source_order:"):
+                    already_has_pickup.add(entry.split(":", 1)[1])
+
     created: list[str] = []
-    for order in store.all_orders():
+    for order in all_orders:
         same_patient = order.patient_id == patient_id
         already_pickup = order.is_pickup
-        if same_patient and not already_pickup:
+        if same_patient and not already_pickup and order.id not in already_has_pickup:
             pickup = Order(
                 id=store.next_id(),
                 patient_id=patient_id,
@@ -169,6 +200,7 @@ def mark_deceased(patient_id: str) -> tuple[int, list[str]]:
                 address=order.address,
                 contact_phone=order.contact_phone,
             )
+            pickup.log.append(f"source_order:{order.id}")
             pickup.log.append(
                 f"{_stamp()} auto-created on death of {patient_id}; "
                 f"pickup routed to {order.vendor or 'network'}"
