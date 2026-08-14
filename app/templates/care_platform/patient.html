@@ -69,6 +69,7 @@
   <div id="dispatch-success" style="display:none;">
     <p style="color: var(--accent); font-weight:600;">&#10003; Sent to BetterMesh.</p>
     <a class="btn" id="status-link" href="{{ status_url }}">Equipment Status &rarr;</a>
+    <button type="button" class="btn secondary" id="dispatch-cancel-btn" style="margin-left:8px;">Cancel dispatch</button>
   </div>
 </div>
 
@@ -92,6 +93,7 @@
   <div id="menu-success" style="display:none; margin-top:14px;">
     <p style="color: var(--accent); font-weight:600;">&#10003; Sent to BetterMesh.</p>
     <a class="btn" id="menu-status-link" href="{{ status_url }}">Equipment Status &rarr;</a>
+    <button type="button" class="btn secondary" id="menu-cancel-btn" style="margin-left:8px;">Cancel dispatch</button>
   </div>
 </div>
 
@@ -128,6 +130,14 @@
   var EQUIPMENT_OPTIONS = {{ equipment_options | tojson }};
   var PENDING_NEEDS = {{ pending_needs | tojson }};
   var HAS_URGENT = PENDING_NEEDS.some(function (n) { return n.urgent; });
+  var dispatchedOrderIds = [];
+  var menuOrderIds = [];
+
+  function cancelOrders(ids) {
+    return Promise.all(ids.map(function (id) {
+      return post('/webhook/cancel-order', { order_id: id });
+    }));
+  }
 
   function post(path, body) {
     return fetch(API_BASE + path, {
@@ -185,9 +195,18 @@
       equipment_codes: codes, target_date: target,
       address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
       consent_on_file: document.getElementById('dispatch-consent').checked
-    }).then(function () {
+    }).then(function (data) {
+      dispatchedOrderIds = data.created || [];
       document.getElementById('dispatch-form').style.display = 'none';
       document.getElementById('dispatch-success').style.display = 'block';
+      refreshStatus();
+    });
+  };
+
+  document.getElementById('dispatch-cancel-btn').onclick = function () {
+    var btn = this; btn.disabled = true; btn.textContent = 'Cancelling…';
+    cancelOrders(dispatchedOrderIds).then(function () {
+      btn.textContent = 'Cancelled';
       refreshStatus();
     });
   };
@@ -203,9 +222,18 @@
       order_type: 'Admission', equipment_codes: codes, target_date: target,
       address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
       consent_on_file: document.getElementById('menu-consent').checked
-    }).then(function () {
+    }).then(function (data) {
+      menuOrderIds = data.created || [];
       document.getElementById('menu-success').style.display = 'block';
       btn.style.display = 'none';
+      refreshStatus();
+    });
+  };
+
+  document.getElementById('menu-cancel-btn').onclick = function () {
+    var btn = this; btn.disabled = true; btn.textContent = 'Cancelling…';
+    cancelOrders(menuOrderIds).then(function () {
+      btn.textContent = 'Cancelled';
       refreshStatus();
     });
   };

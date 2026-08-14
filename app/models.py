@@ -16,9 +16,10 @@ IN_TRANSIT = "In Transit"
 DELIVERED = "Delivered"
 PICKUP_REQUESTED = "Pickup Requested"
 PICKED_UP = "Picked Up"
+CANCELLED = "Cancelled"
 
 ACTIVE_DELIVERY_STATES = {ORDERED, DISPATCHED, IN_TRANSIT}
-CLOSED_STATES = {DELIVERED, PICKED_UP}
+CLOSED_STATES = {DELIVERED, PICKED_UP, CANCELLED}
 
 
 # HCPCS E-code -> human label. Used by the UI (dropdowns/menus render this dict
@@ -81,6 +82,10 @@ class Order:
     # DME vendor fulfilling this order. Surfaced to vendors so they know when
     # it's missing; defaults False (opt-in, not assumed).
     consent_on_file: bool = False
+    # Caller-supplied idempotency token from the pre-discharge webhook (e.g. a
+    # hospice EMR's own order/event id). Empty when an order didn't arrive
+    # with one — dedup by external_ref is opt-in, not required.
+    external_ref: str = ""
 
     @property
     def equipment_name(self) -> str:

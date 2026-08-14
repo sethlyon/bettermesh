@@ -5,6 +5,7 @@ Run: uvicorn app.main:app --reload  (from the bettermesh/ directory)
 """
 from __future__ import annotations
 
+import json
 import os
 from datetime import datetime
 from pathlib import Path
@@ -26,6 +27,7 @@ from .models import (
     EQUIPMENT,
     ORDERED,
     PICKUP_REQUESTED,
+    VENDORS,
     Order,
 )
 
@@ -241,6 +243,23 @@ def accept(request: Request, order_id: str):
     return templates.TemplateResponse("_board_inner.html", _board_ctx(request, user, flash))
 
 
+@app.post("/orders/{order_id}/cancel", response_class=HTMLResponse)
+def cancel(request: Request, order_id: str):
+    user = _current_user(request)
+    if user is None:
+        return _login_required_response()
+    order = store.get(order_id)
+    if user.role != "hospice":
+        flash = "Only a hospice account can cancel an order."
+    elif not order:
+        flash = "Order not found."
+    elif not order.is_open:
+        flash = f"{order.id} is no longer open and can't be cancelled here."
+    else:
+        _, flash = dispatch.cancel_order(order)
+    return templates.TemplateResponse("_board_inner.html", _board_ctx(request, user, flash))
+
+
 @app.post("/orders/{order_id}/deliver", response_class=HTMLResponse)
 def deliver(request: Request, order_id: str):
     user = _current_user(request)
@@ -349,7 +368,34 @@ def _order_json(o: Order) -> dict:
         "contact_phone": o.contact_phone,
         "equipment_notes": o.equipment_notes,
         "consent_on_file": o.consent_on_file,
+        "external_ref": o.external_ref,
     }
+
+
+def _maybe_auto_route(order: Order) -> str | None:
+    """Auto-assign an order the moment it's created, but only in the narrow
+    case where there's no real "opportunity pool" decision to watch: exactly
+    one contracted vendor stocks this equipment at all. If two or more
+    vendors stock it, the order stays open so the network can compete for it
+    the normal way, even if one candidate clearly ranks best on ETA/price —
+    that ranking is what the hospice's "Best match" recommendation is for,
+    not a reason to skip the pool.
+
+    With today's sample VENDORS table every equipment code (E0250, E1130,
+    E0601) is stocked by at least two of the three sample vendors, so this
+    condition never fires against the current demo data — which is exactly
+    the point: the existing multi-vendor demo scenarios (including all three
+    hand-built care-platform demo patients) keep landing in the open pool
+    unchanged. This still does real work the moment a hospice's contracted
+    network only has one vendor for some piece of equipment.
+    """
+    stocking = [v for v in VENDORS.values() if order.equipment_code in v.stock]
+    if len(stocking) != 1:
+        return None
+    ranked = dispatch.rank_candidates_for(order)
+    if not ranked or not ranked[0]["meets"]:
+        return None
+    return ranked[0]["vendor"]
 
 
 @app.get("/api/patients/{patient_id}/orders")
@@ -387,6 +433,12 @@ async def webhook_pre_discharge_order(request: Request):
     contact_phone = str(body.get("contact_phone", "")).strip()
     equipment_notes = str(body.get("equipment_notes", "")).strip()
     consent_on_file = bool(body.get("consent_on_file", False))
+    # Opt-in idempotency token: a hospice EMR's own order/event id, echoed
+    # back on retry so a double-click or a timeout-triggered retry doesn't
+    # fan out a second set of orders. Empty by default — omitting it keeps
+    # the endpoint's existing always-create behavior unchanged for callers
+    # that don't send one.
+    external_ref = str(body.get("external_ref", "")).strip()
     try:
         target = datetime.fromisoformat(body["target_date"]) if body.get("target_date") else None
     except (ValueError, KeyError):
@@ -405,7 +457,21 @@ async def webhook_pre_discharge_order(request: Request):
             media_type="application/json",
         )
 
+    if external_ref:
+        existing = [
+            o.id for o in store.all_orders()
+            if o.patient_id == patient_id and o.external_ref == external_ref
+        ]
+        if existing:
+            return {
+                "created": [],
+                "existing": existing,
+                "idempotent": True,
+                "patient_id": patient_id,
+            }
+
     created: list[str] = []
+    auto_routed: dict[str, str] = {}
     for code in equipment_codes:
         if code not in EQUIPMENT:
             continue
@@ -422,15 +488,58 @@ async def webhook_pre_discharge_order(request: Request):
             contact_phone=contact_phone,
             equipment_notes=equipment_notes,
             consent_on_file=consent_on_file,
+            external_ref=external_ref,
         )
         order.log.append(f"received via pre-discharge webhook from {hospice}")
         store.add(order)
         created.append(order.id)
 
+        # Tier-1 auto-routing: skip the open pool only when there's no real
+        # vendor choice to make (see _maybe_auto_route for the threshold).
+        vendor_name = _maybe_auto_route(order)
+        if vendor_name:
+            ok, _ = dispatch.accept(order, vendor_name)
+            if ok:
+                order.log.append(
+                    f"{vendor_name} is the only contracted vendor stocking {code} "
+                    f"and meets the window — auto-routed instead of opened to the pool"
+                )
+                auto_routed[order.id] = vendor_name
+
     if not created:
         return HTMLResponse('{"error": "no valid equipment_codes"}', status_code=400, media_type="application/json")
 
-    return {"created": created, "patient_id": patient_id}
+    return {"created": created, "patient_id": patient_id, "auto_routed": auto_routed}
+
+
+@app.post("/webhook/cancel-order")
+async def webhook_cancel_order(request: Request):
+    """System-to-system cancel: a hospice's own record system can retract an
+
+    order (physician change of mind, entry mistake) the same way it pushes
+    one in, without anyone needing to log into BetterMesh to do it.
+    """
+    if not _webhook_authorized(request):
+        return HTMLResponse('{"error": "unauthorized"}', status_code=401, media_type="application/json")
+
+    body = await request.json()
+    order_id = str(body.get("order_id", "")).strip()
+    if not order_id:
+        return HTMLResponse('{"error": "order_id is required"}', status_code=400, media_type="application/json")
+
+    order = store.get(order_id)
+    if not order:
+        return HTMLResponse(
+            json.dumps({"error": f"no order found with id {order_id}"}),
+            status_code=404,
+            media_type="application/json",
+        )
+
+    ok, message = dispatch.cancel_order(order)
+    if not ok:
+        return HTMLResponse(json.dumps({"error": message}), status_code=409, media_type="application/json")
+
+    return {"order_id": order.id, "status": order.status, "message": message}
 
 
 @app.post("/webhook/mark-deceased")
