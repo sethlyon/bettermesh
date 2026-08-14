@@ -16,7 +16,7 @@ from pathlib import Path
 from urllib.parse import urlencode
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from .care_platform_data import (
@@ -33,6 +33,13 @@ router = APIRouter(prefix="/care-platform")
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+# In-memory inbox of BetterMesh -> hospice push notifications (see
+# app/notifications.py), keyed by hospice slug. Newest-last; only the most
+# recent 10 per hospice are kept. This is intentionally a demo-simple store,
+# not persistence - it resets on process restart, same as the rest of this
+# mock system's state.
+_RECENT_NOTIFICATIONS: dict[str, list[dict]] = {slug: [] for slug in HOSPICES}
 
 
 def _resolve_hospice_slug(request: Request) -> str:
@@ -72,6 +79,7 @@ def patient_list(request: Request):
             "patients": patients_for(slug),
             "hospice_qs": f"?hospice={slug}" if request.query_params.get("hospice") else "",
             "bettermesh_url": _bettermesh_origin(request) + "/",
+            "recent_notifications": list(reversed(_RECENT_NOTIFICATIONS.get(slug, []))),
         },
     )
 
@@ -110,3 +118,35 @@ def patient_record(patient_id: str, request: Request):
             "hospice_qs": qs,
         },
     )
+
+
+@router.post("/webhook/status-update")
+async def status_update(request: Request):
+    """Receive a push notification from BetterMesh about an order status change.
+
+    This is the other half of app/notifications.py: BetterMesh calls this
+    (fire-and-forget, best-effort) whenever a vendor accepts, delivers, or
+    completes a pickup, so this hospice's own system doesn't have to keep
+    polling GET /api/patients/{id}/orders to find out. Unlike the other
+    /webhook/* and /api/* endpoints in this app, this one is receiving a call
+    FROM BetterMesh's own server rather than from an arbitrary hospice, so it
+    intentionally skips the shared-secret check.
+    """
+    slug = _resolve_hospice_slug(request)
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+
+    entry = {
+        "order_id": body.get("order_id"),
+        "patient_id": body.get("patient_id"),
+        "event": body.get("event"),
+        "status": body.get("status"),
+        "vendor": body.get("vendor"),
+        "timestamp": body.get("timestamp"),
+    }
+    bucket = _RECENT_NOTIFICATIONS.setdefault(slug, [])
+    bucket.append(entry)
+    _RECENT_NOTIFICATIONS[slug] = bucket[-10:]
+    return JSONResponse({"received": True})
