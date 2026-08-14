@@ -5,9 +5,12 @@ a small in-memory table instead of a database. Passwords are still stored as
 salted SHA-256 hashes rather than plaintext, and login is a real
 username/password check against those hashes.
 
-One hospice case-manager account, plus one dispatcher account per entry in
-`VENDORS` (models.py) so each vendor's dispatcher can only ever see and act
-on that vendor's own board.
+One unrestricted hospice case-manager account (sees every hospice's orders),
+plus one tenant-scoped account per hospice brand (`hospice` set to that
+brand's exact `Order.hospice` string, so it only ever sees and acts on its
+own hospice's orders) and one dispatcher account per entry in `VENDORS`
+(models.py) so each vendor's dispatcher can only ever see and act on that
+vendor's own board.
 """
 from __future__ import annotations
 
@@ -27,6 +30,7 @@ class User:
     role: str  # "hospice" | "dispatcher"
     vendor: str | None  # set only for dispatcher accounts
     display_name: str
+    hospice: str | None = None  # set only for tenant-scoped hospice accounts
 
 
 def _hash_password(password: str, salt: str) -> str:
@@ -35,7 +39,15 @@ def _hash_password(password: str, salt: str) -> str:
     return hashlib.sha256(f"{salt}:{password}".encode("utf-8")).hexdigest()
 
 
-def _account(username: str, password: str, role: str, *, vendor: str | None = None, display_name: str | None = None) -> dict:
+def _account(
+    username: str,
+    password: str,
+    role: str,
+    *,
+    vendor: str | None = None,
+    hospice: str | None = None,
+    display_name: str | None = None,
+) -> dict:
     salt = username
     return {
         "username": username,
@@ -43,6 +55,7 @@ def _account(username: str, password: str, role: str, *, vendor: str | None = No
         "salt": salt,
         "role": role,
         "vendor": vendor,
+        "hospice": hospice,
         "display_name": display_name or username,
     }
 
@@ -54,7 +67,29 @@ _ACCOUNTS: list[dict] = [
         "casemanager",
         "hospice123",
         HOSPICE,
+        hospice=None,  # no tenant restriction — sees every hospice's orders
         display_name="Hospice Case Manager",
+    ),
+    _account(
+        "anchorpoint",
+        "anchorpoint123",
+        HOSPICE,
+        hospice="Anchorpoint Hospice Partners",
+        display_name="Anchorpoint Case Manager",
+    ),
+    _account(
+        "cedarridge",
+        "cedarridge123",
+        HOSPICE,
+        hospice="Cedar Ridge Hospice & Home Care",
+        display_name="Cedar Ridge Case Manager",
+    ),
+    _account(
+        "thistlemoor",
+        "thistlemoor123",
+        HOSPICE,
+        hospice="Thistlemoor Hospice",
+        display_name="Thistlemoor Case Manager",
     ),
     *[
         _account(
@@ -81,6 +116,7 @@ def get_user(username: str) -> User | None:
         role=account["role"],
         vendor=account["vendor"],
         display_name=account["display_name"],
+        hospice=account["hospice"],
     )
 
 

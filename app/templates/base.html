@@ -23,7 +23,7 @@
     {% if user %}
     <nav class="roles">
       <span class="session-info">
-        {{ user.display_name }}{% if user.vendor %} · {{ user.vendor }}{% endif %}
+        {{ user.display_name }}{% if user.vendor %} · {{ user.vendor }}{% endif %}{% if user.hospice %} · {{ user.hospice }}{% endif %}
       </span>
       <form method="post" action="/logout" class="logout-form">
         <button type="submit" class="ghost">Log out</button>

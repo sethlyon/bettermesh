@@ -88,7 +88,10 @@ workspace, or just export directly):
 
 | Username | Password | Role |
 |---|---|---|
-| `casemanager` | `hospice123` | Hospice case manager |
+| `casemanager` | `hospice123` | Hospice case manager (all hospices, unrestricted) |
+| `anchorpoint` | `anchorpoint123` | Anchorpoint Hospice Partners case manager (tenant-scoped) |
+| `cedarridge` | `cedarridge123` | Cedar Ridge Hospice & Home Care case manager (tenant-scoped) |
+| `thistlemoor` | `thistlemoor123` | Thistlemoor Hospice case manager (tenant-scoped) |
 | `dispatcher1` | `vendor1pass` | Sample Vendor 1 |
 | `dispatcher2` | `vendor2pass` | Sample Vendor 2 |
 | `dispatcher3` | `vendor3pass` | Sample Vendor 3 |

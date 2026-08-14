@@ -88,6 +88,8 @@ def _login_required_response() -> HTMLResponse:
 
 def _board_ctx(request: Request, user: auth.User, flash: str = "", highlight_patient: str = "") -> dict:
     orders = store.all_orders()
+    if user.role == "hospice" and user.hospice:
+        orders = [o for o in orders if o.hospice == user.hospice]
     ctx: dict = {
         "request": request,
         "role": user.role,
@@ -188,6 +190,8 @@ def all_dispatches(
         return RedirectResponse("/", status_code=303)
 
     all_orders = store.all_orders()
+    if user.hospice:
+        all_orders = [o for o in all_orders if o.hospice == user.hospice]
     orders = all_orders
     if patient_id:
         orders = [o for o in orders if o.patient_id == patient_id]
@@ -306,7 +310,7 @@ def create_order(
     order = Order(
         id=store.next_id(),
         patient_id=patient_id,
-        hospice="Anchorpoint Hospice Partners",
+        hospice=user.hospice or "Anchorpoint Hospice Partners",
         equipment_code=equipment_code,
         order_type="Admission",
         status=ORDERED,
