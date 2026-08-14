@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
-from . import store
+from . import notifications, store
 from .models import (
     DELIVERED,
     IN_TRANSIT,
@@ -102,6 +102,7 @@ def accept(order: Order, vendor_name: str) -> tuple[bool, str]:
         f"{_stamp()} accepted by {vendor_name}; committed ETA "
         f"{eta.strftime('%-I:%M %p')} ({verdict})"
     )
+    notifications.notify_hospice(order, "accepted")
     return True, f"{order.id} accepted by {vendor_name}, ETA {eta.strftime('%-I:%M %p')}."
 
 
@@ -129,6 +130,7 @@ def mark_delivered(order: Order) -> tuple[bool, str]:
         return False, "Nothing to deliver."
     order.status = DELIVERED
     order.log.append(f"{_stamp()} delivery confirmed by {order.vendor}")
+    notifications.notify_hospice(order, "delivered")
     return True, f"{order.id} marked delivered."
 
 
@@ -138,6 +140,7 @@ def complete_pickup(order: Order) -> tuple[bool, str]:
         return False, "Nothing to pick up."
     order.status = PICKED_UP
     order.log.append(f"{_stamp()} pickup completed by {order.vendor}")
+    notifications.notify_hospice(order, "pickup_completed")
     return True, f"{order.id} pickup completed."
 
 
