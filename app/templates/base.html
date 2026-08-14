@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BetterMesh by BetterRX</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .roles { display: flex; align-items: center; gap: 12px; }
+    .session-info { color: #b7c6d8; font-size: 14px; }
+    .logout-form { margin: 0; }
+    .logout-form button.ghost { color: #b7c6d8; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
+    .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-main">BetterMesh</span>
+      <span class="brand-sub">by BetterRX</span>
+    </div>
+    {% if user %}
+    <nav class="roles">
+      <span class="session-info">
+        {{ user.display_name }}{% if user.vendor %} · {{ user.vendor }}{% endif %}
+      </span>
+      <form method="post" action="/logout" class="logout-form">
+        <button type="submit" class="ghost">Log out</button>
+      </form>
+    </nav>
+    {% endif %}
+  </header>
+
+  <main id="board">
+    {% block board %}{% endblock %}
+  </main>
+</body>
+</html>

@@ -1,0 +1,279 @@
+- [13:08] **Speaker 1d565164**: We have to incorporate the end page, but the number one thing that determines if a customer skates is if they make money, and so that's our primary choice.
+- [13:08] **Speaker 1d565164**: Time to revenue for autonomous businesses. So, things that we currently have left that you can use to riff off of or as the inspiration.
+- [13:08] **Speaker 1d565164**: Integration with meta ads that includes Facebook and Instagram. We have something that can create images or videos, run the ads, and it reviews them nicely.
+- [13:08] **Speaker 1d565164**: Micro-adjustments as needed to help lower your customer acquisition costs. We have one where you can use and identify leads either by scraping Google.
+- [13:09] **Speaker 1d565164**: ...or using a lead database and then creating a variety of cold outreach email sequences, right? We want you to get creative. What are unique ways...
+- [13:09] **Speaker 1d565164**: One, you go to market to find customers for a variety of businesses, and then two, how can you feed this data that you're generating?
+- [13:09] **Unknown Speaker**: ...into the own systems that it can build out on what works and kill what doesn't work. Does that make sense? So, fresh new code, everything's degenerated.
+- [13:09] **Speaker 1d565164**: If it works out, and we'd like you, we'll hire you, and you'll just come in with us and we'll all capitalize on you. But that's the goal. Alright, questions?
+- [13:09] **Unknown Speaker**: It's all on your hands. Yeah. So just to be clear, it's less about your go-to-market plans for your films. Yeah.
+- [13:09] **Unknown Speaker**: Do you go to market a plan for the individual businesses? Exactly, exactly. So what unique, interesting ways do you go to market?
+- [13:10] **Speaker 1d565164**: Services that range from e-commerce to service-based industries, construction, landscaping, car detailing, things like that.
+- [13:10] **Unknown Speaker**: You also don't need to understand everything right this second because we will bring it to her screen making depth, detailed answers.
+- [13:10] **Unknown Speaker**: You can also message me on Slack as well as hyper-sistering questions.
+- [13:10] **Unknown Speaker**: All right. Good. Go make this.
+- [13:10] **Unknown Speaker**: I'm going to talk about that for a second. The most interesting thing he said is that if you do a good job, they want to hire you. Did you guys just raise your hand? We're ready.
+- [13:10] **Speaker c4657f92**: We're going to get around in a little bit. Yeah. Last month we did 290, they were quickly growing. We would be deploying number 2.
+- [13:11] **Unknown Speaker**: This is an opportunity to be part of a very fast-growing, highly-interested service. So, I just want to call it that.
+- [13:11] **Unknown Speaker**: If you do a good job, you're going to be on the Department of Transportation. Okay. I'm going to go. I'm going to let you in on a little secret. Department of War.
+- [13:11] **Unknown Speaker**: The Department of Health and Behavior Services spent a lot of money, a ton of money. They are looking for states to partner with them to make...
+- [13:11] **Unknown Speaker**: ...significate focus bets and not pay up about the budget. So they want to build centers of innovation and...
+- [13:11] **Unknown Speaker**: ...where they can put non-illusioned funding behind companies that are building things that matter to us. One of my jobs right now is getting...
+- [13:11] **Unknown Speaker**: ...verify things that the government wants to build, that they will pay you to do. So, what I'm now doing...
+- [13:12] **Unknown Speaker**: If that's been true, how do we make it simple for all of the ways across the federal government to get funding for companies?
+- [13:12] **Speaker 74ccb980**: So that is my bounty. You would build a tool that scrapes across multiple different...
+- [13:12] **Speaker 74ccb980**: ...and funding websites. The problem isn't resources. There's a ton of money in the government that none of you know that you should be receiving.
+- [13:12] **Speaker c4657f92**: And what the next product of this should be, that you should be able to go here and say, I have a company doing this, and you're going out for this opportunity, and...
+- [13:12] **Speaker 74ccb980**: These are the 5 best matches for you. Here's the way, here's the formula you need to fill out. We will fill out all of this.
+- [13:13] **Speaker 74ccb980**: In your website, you know what I'm doing for you, right? So my goal for you is that you build a tool that can scrape the company's website.
+- [13:13] **Speaker 74ccb980**: I need to fill in the application for you to get closer and further down the rank process without having to do a lot of effort.
+- [13:13] **Speaker 74ccb980**: We're going to create a government now, the NSF American Sea Fund, the SBIR opportunity, and the federal procurement opportunity.
+- [13:13] **Speaker 74ccb980**: There's APIs that you can plug into, and my folks have to take all of those APIs now, guide, and entrepreneur, genopath.
+- [13:13] **Unknown Speaker**: So if the entrepreneur already included stuff, you're trying to match what they have done. Or it could also be like, hey, I'm looking at this.
+- [13:13] **Speaker 74ccb980**: I want you to know in this article that opportunities exist that the government say is promised to me. These usually aren't what he said. Yeah.
+- [13:14] **Unknown Speaker**: ...grants, there's a whole lot of ways of this, a lot of the things that we're going to be inverses, I think government's going to be back and say we're not getting into the research of inverses automatically, we're going to help...
+- [13:14] **Speaker 74ccb980**: And I want you to try to get the vast majority of that capital as much as we can. I want you all to get that capital instead of just being, you know what?
+- [13:14] **Speaker 74ccb980**: This is an incredible opportunity right now, and I want you to talk to me now, because that's why this is the thing I want to see.
+- [13:14] **Unknown Speaker**: I want you to be able to make it as easy for them to apply as possible.
+- [13:14] **Speaker 74ccb980**: So your job is to build a tool that takes in all the eight guys from all of these funding sources.
+- [13:14] **Speaker 74ccb980**: What you're building, what you're interested in, these are the ones that would make the most sense for you to start matching them to the opportunities. My job at the time will be to fill in the names of...
+- [13:15] **Unknown Speaker**: There are agencies who are the voice of contact in relationships. So how do you have the password for authentication? The password for authentication is not...
+- [13:15] **Speaker 74ccb980**: I don't want any of you guys right now. Oh, excuse me, what else? You don't need to have, you don't need to have to describe CSBI. What's CSBI?
+- [13:15] **Speaker 74ccb980**: If there is a password, don't worry about it, just say like I could pull up the SBIR one because the API is open, but from my understanding, they deserve to be so strange.
+- [13:15] **Speaker 74ccb980**: Prices? Prices? Okay, right. $200 gift card per second, $50 gift card.
+- [13:15] **Unknown Speaker**: And my good grace is that I won't do anything else for you. He has papers. I'm sorry. What should I do for you so much for a child? Okay. What else?
+- [13:15] **Unknown Speaker**: Again, we'll have a program that she's in. Okay, do you guys want to come up? Let's take a look at our guys, let's go!
+- [13:16] **Unknown Speaker**: I want to give it up to this team real fast, Ben, the CEO and I, the principal, he saw what we did.
+- [13:16] **Speaker 74ccb980**: I want to do some math. We're here right now. We're here. We're here. And hopefully this gets you out pretty beautiful.
+- [13:16] **Unknown Speaker**: All right, thank you, Tyler. So first off, I want to thank everyone who submitted for our ballot. We really appreciate that.
+- [13:16] **Unknown Speaker**: In reading those submissions, you've read a lot of stories of personal experiences, and that means a lot to us. So rather than going into the details...
+- [13:16] **Unknown Speaker**: I'm going to focus on who BetterEx is, who we are as a company, what we do, why that's meaningful, and we will announce the 10...
+- [13:16] **Speaker 4509111c**: 10 teams have been selected. And I'll say this, the reason we lifted it to 10 is because we wanted to give those teams adequate opportunity to present their ideas, to present their solutions.
+- [13:17] **Unknown Speaker**: We're going to leave it open for anyone else if you're still so inspired, even after the mountains are given, to be with us, share your ideas, talk to you.
+- [13:17] **Unknown Speaker**: I don't know if I said the end, so I'll share that with you, but I want to tell you a little bit about NRS. Has anyone here ever had an experience?
+- [13:17] **Speaker 4509111c**: Is that someone, a loved one, any thoughts before you guys have seen something here too? Okay, so we have some personal experiences. For those who haven't experienced this yet,
+- [13:17] **Speaker 4509111c**: You can imagine, you can imagine what this is like for the loved one, the caregiver who has a loved one who is on the hospice. I want to share just a couple.
+- [13:17] **Speaker 4509111c**: These folks, both the caregivers as well as those who serve these caregivers, the nurses and the hospice staff.
+- [13:17] **Speaker 4509111c**: So, I talked to a man recently, just a few months ago, who was a caregiver for a long-term hospice with his wife.
+- [13:18] **Speaker 4509111c**: She's 50 years old and she had a terminal illness now for a few years. And as we're talking, we're trying to understand what is it like for you.
+- [13:18] **Speaker 4509111c**: The life for a caregiver that has a loved one of us is what he's going through. And one of the things that he shared was, he said,
+- [13:18] **Speaker 4509111c**: The most part is every night I go to sleep and I don't know if she's going to be there tomorrow. That's my experience. So this is the emotional way.
+- [13:18] **Unknown Speaker**: I'm hearing at all times, they're hearing sweet. Now as part of that, as they're doing that, they're not, they don't want to have time to...
+- [13:18] **Speaker 4509111c**: Where are my medications from? Are they here? Do I have them? Are they ordered? Are they delivered on time? It's something that they don't have to handle.
+- [13:18] **Speaker 4509111c**: For that person who's on hospice, their focus, this is the end of their life, they deserve the dignified passing.
+- [13:19] **Speaker 4509111c**: They should not worry about their pain. They should not be in pain. They should be able to relax and pass it. The founder of our company, his name is Jerry Stong, he had a loved one.
+- [13:19] **Speaker 4509111c**: The worst story I've heard about that is that I had a nurse who said you couldn't get the medication on time. You couldn't get the medication on time for the hospice.
+- [13:19] **Speaker 4509111c**: ...from the pharmacy. So we sat in a room with a patient and she died on screen. So this is a reality that shouldn't exist.
+- [13:19] **Speaker 4509111c**: So our company is focused on, our mission is to end the suffering, cause of medication. We think everyone deserves it.
+- [13:19] **Speaker 4509111c**: Carriers deserve to say that their loved ones pass the case, either level pass the case, they fight them. And the case managers is a nurse.
+- [13:19] **Speaker 4509111c**: I'm telling you, these nurses are superheroes, and I think they've got a lot of cash for those who have had people in hospice. These are superheroes. The time and care that they provide for their loved ones.
+- [13:20] **Speaker 4509111c**: These patients who are passing, these meds, they will actually go and find meds on their own. So, our system...
+- [13:20] **Unknown Speaker**: Okay, there's this invisible bad guy that you may or may not have heard of called a PDM pharmacy benefit manager, and these folks are focused more on making...
+- [13:20] **Unknown Speaker**: Providing medication to these patients, and so nurses at a time of need, they'll try, they'll just go find a farm, they'll try their best to figure it out.
+- [13:20] **Speaker 4509111c**: ...created has been developed to simplify all that, to take away frantic phone calls to say we're on medications, to try to...
+- [13:20] **Speaker 4509111c**: Please get this, I need something for this patient's pain, we will eliminate that, we're getting rid of that. I'll tell you, if you ever ask your technology, you'll notice it's simple. It's actually...
+- [13:20] **Speaker 4509111c**: The other piece of simplicity is not extremely complex technology, but the workflows are simple.
+- [13:21] **Speaker 4509111c**: Very easy for nurses to give medications. And what's interesting about this too, what's really interesting about this is when I first came on, I don't know if you guys...
+- [13:21] **Unknown Speaker**: Anyone here who works in healthcare for? Anyone have a healthcare diagram? Okay, so anyone who works in healthcare knows. Healthcare is like the very end of the road that comes with technology.
+- [13:21] **Speaker 4509111c**: The place where we lack in the non-hands is, by the way, we don't have our blood stress support, but we can't stress our things to your creation. So we are healthcare-sensitive...
+- [13:21] **Speaker 4509111c**: Hospice tends to be a ladder in health care, so far, so far. So what's interesting is despite
+- [13:21] **Speaker 4509111c**: This industry, and I saw technology, but it's really simple. It is a leading technology industry. I know that because of that competitors tell clients that.
+- [13:21] **Speaker 4509111c**: We better just say, look, we know better our technology than this, and it's, so we've been able to help millions of lives just through providing...
+- [13:22] **Speaker 4509111c**: What we're doing next, we have a consultant once who said this and I love the way he said it, he said we have a moral obligation.
+- [13:22] **Speaker 4509111c**: ...to provide this technology to every possible provider we can, so that we can limit the influence of QMFs and can be compassionate, by the way.
+- [13:22] **Speaker 4509111c**: ...expanding our moral obligation. Nurses are not just calling frantically about medication, they call frantically about durable medical equipment as well. This is your interview.
+- [13:22] **Speaker 4509111c**: Yes, imagine your loved one just got really excited to the hospital and she's got a minute or eight minutes in hospice and they're coming home.
+- [13:22] **Speaker 4509111c**: This is not something you can wait a couple days for. It needs to be there. And that's the problem that exists today. So we are looking to solve that problem.
+- [13:23] **Speaker 4509111c**: We've got great questions to ask in the survey responses. We can put together an FAQ doc to answer those questions.
+- [13:23] **Speaker 4509111c**: All right, after this, we get more content on answering questions directly, so I'm going to elaborate on that here. I do want to get to, this is what I just had right here.
+- [13:23] **Speaker 4509111c**: All the time we're trying to solve, and now we can see these cases, but let's make sure that the medication, that the medical equipment is there to set the medication apart.
+- [13:23] **Speaker 4509111c**: So now we're going to announce the teams that are working on this, and like I said, if you weren't chosen, still would love to hear from you.
+- [13:23] **Unknown Speaker**: Daddy, I'm still a little cat. These are the 10, these are the 10 G's. I'm not going to say it in my name, but...
+- [13:23] **Speaker 4509111c**: These are the team mates that have been selected to leave some club behind us after finishing here and give you more detail about the two parties here at the stake. You're good.
+- [13:24] **Unknown Speaker**: If you have an idea and you want us to hear about it, we're moved by this, we want to be part of it.
+- [13:24] **Unknown Speaker**: We're still friends, y'all, and if you're not working on this down, so please, my email is right here to the snapshot of it, and you can get online.
+- [13:24] **Unknown Speaker**: Thank you.
+- [13:24] **Unknown Speaker**: Yeah, we go in there and we'll have you meet in there for deep dive questions.
+- [13:24] **Unknown Speaker**: In education, if you would like to learn more about the NOVA N1, please just stay right in this space. If you would like to learn more about the NOVA N1, please just stay right in this space.
+- [13:24] **Unknown Speaker**: Head to this side of the room and you can ask them more questions. We'll go about third agents, like deep dive with them. I will send out the link and I will put it up here before you're going to choose.
+- [13:25] **Unknown Speaker**: It's the key to me if you're thinking maybe this or go in, just so I know about just not beside your judging text, but yes.
+- [13:25] **Speaker 74ccb980**: This is the end of the program for the day, right? So you're welcome to stay at work, but you can do that because there's not more time. So that's one, because this is kind of the end. Two.
+- [13:25] **Speaker 74ccb980**: I'm going to start tomorrow till noon. Do not show up in the morning. You're welcome to stay at home and work. But like, no point in coming into the space.
+- [13:25] **Speaker 74ccb980**: Keep working, we'll have our barbecue review. The building is literally just across the highway, that up by building. It's the Dibby building if you ever want to Dibby.
+- [13:25] **Unknown Speaker**: Part of build.com. We'll be in the build.com building tomorrow. It's at May or May 19th, so it's a two-minute drive. My vegan friends ought to be doing healthy tomorrow.
+- [13:25] **Unknown Speaker**: All right, don't show up before lunch, don't come to lunch, keep working wherever you're at, no point in the ear, okay, so you can leave after this.
+- [13:26] **Unknown Speaker**: My mom and I can't wait to hear her. They're right. They're right by the first group. They're right by the first group. They're right by the first group. Okay, come on. I'm on the wall.
+- [13:26] **Unknown Speaker**: Okay, so just wanted to get everybody heads up for giving, anyone who cares it wants to
+- [13:26] **Unknown Speaker**: All we have to do is scan the overcoat, so if you haven't done that already, you want those credits, please put it on.
+- [13:26] **Unknown Speaker**: I just encourage you, if you are considering using custom models or open source models...
+- [13:26] **Unknown Speaker**: Please come test out our platform, see if it fits for what you're building for the competition, and if you're building something outside the competition, we'd love you for you to use this as well, so feel free to check this out.
+- [13:26] **Unknown Speaker**: I'm just going to be all in the credits. And I'm going to be all in the credits. Thanks.
+- [13:27] **Unknown Speaker**: Thank you.
+- [13:27] **Unknown Speaker**: If you have any issues, please come to me.
+- [13:27] **Unknown Speaker**: A lot of announcements and links, so find me if you have a question about it, but yes, break into your space.
+- [13:27] **Unknown Speaker**: Thank you.
+- [13:27] **Unknown Speaker**: Thank you.
+- [13:27] **Unknown Speaker**: Thank you.
+- [13:28] **Unknown Speaker**: I
+- [13:28] **Unknown Speaker**: Grazie
+- [13:28] **Unknown Speaker**: Good. Good. Good.
+- [13:28] **Speaker 81f9ef38**: Thank you.
+- [13:28] **Unknown Speaker**: I
+- [13:28] **Unknown Speaker**: I
+- [13:29] **Unknown Speaker**: Do everyone should have an e-mail fresh for me with the answer to the reason I ask questions?
+- [13:29] **Unknown Speaker**: I'm Peter, by the way.
+- [13:29] **Unknown Speaker**: This is Peter, he's our CTO.
+- [13:29] **Unknown Speaker**: Introduce myself, CPL. This is Ben Cargis, our CEO, Eric Hemming, our president.
+- [13:29] **Unknown Speaker**: This. I saw you nodding a lot in the front row. I'm glad you're on the team. That's great. Would y'all do me a favor?
+- [13:29] **Unknown Speaker**: So see if you can open up the email that you got from Peter and scan through that FAQ doc. The whole idea of the reason we put that together is without that mind, it's simplifying.
+- [13:30] **Unknown Speaker**: That's what I have in this conversation so that way you've got most of your answers already. If you guys just want to take like two, three minutes, scan it, and then...
+- [13:30] **Unknown Speaker**: I'll answer a few more questions to make sure you're all ready to go. So we'll just give you a couple minutes to look through it.
+- [13:30] **Unknown Speaker**: For more information visit www.fema.gov
+- [13:30] **Unknown Speaker**: Right now everyone's just reading.
+- [13:30] **Unknown Speaker**: Everyone on the doc came up with the FAQ, so if you need a forwarded team member, see them.
+- [13:30] **Unknown Speaker**: I
+- [13:31] **Unknown Speaker**: Thank you.
+- [13:31] **Unknown Speaker**: Thank you.
+- [13:31] **Unknown Speaker**: So now, it's so big.
+- [13:31] **Unknown Speaker**: Thank you.
+- [13:31] **Unknown Speaker**: It's in the room now, so we fill the case to support the application.
+- [13:31] **Unknown Speaker**: Thank you.
+- [13:32] **Speaker 228b8b6e**: All right.
+- [13:32] **Speaker 781bb04e**: Thank you.
+- [13:32] **Unknown Speaker**: I'm going to show you what I'm going to show you today.
+- [13:32] **Unknown Speaker**: Thank you.
+- [13:32] **Unknown Speaker**: I am so happy to have some time for a month. I would love to see you. Um, so that's how we will. Oh, sure. But, you know, in this summer, we're going to take a break. We're going to take a break. I'll tell you. I think the thing is a big bit. I think the thing is a big deal. Oh, we've got to be. I was like, you know? Yeah. Oh, no. We're like, you know? What are we going to take? Oh, no. Oh, no. Oh, no. Oh, no.
+- [13:33] **Unknown Speaker**: ご視聴ありがとうございました
+- [13:33] **Unknown Speaker**: Thank you.
+- [13:33] **Unknown Speaker**: So
+- [13:33] **Unknown Speaker**: Thanks for this.
+- [13:33] **Unknown Speaker**: You
+- [13:33] **Speaker 781bb04e**: So
+- [13:34] **Speaker 781bb04e**: Thank you.
+- [13:34] **Speaker 781bb04e**: ...
+- [13:34] **Unknown Speaker**: Thank you.
+- [13:34] **Unknown Speaker**: So
+- [13:34] **Unknown Speaker**: Thank you.
+- [13:34] **Unknown Speaker**: This video is made possible in this video. This video is made possible in the video.
+- [13:35] **Unknown Speaker**: All right.
+- [13:35] **Unknown Speaker**: Good enough scan. Would you like me to provide any kind of opening summary or would you prefer to jump in?
+- [13:35] **Unknown Speaker**: ...answered Q&A about what we provided. I'll say great. Great. Fantastic. Thank you. You said great. I made it fantastic.
+- [13:35] **Unknown Speaker**: Okay, great. So here's what we're seeing in the space. I'm going to approach this a little different than it did in Bounty Reef, so this might help you.
+- [13:35] **Unknown Speaker**: Might add some greater context as well. So one of the things that we've, I've talked about the problem from the hospice provider, right? So all.
+- [13:35] **Unknown Speaker**: We provide the patient part through the hospices themselves. Hospices are our clients. That's who we sell to. And then we leverage...
+- [13:36] **Speaker 59d538dd**: We have a marketplace model, so we have a pharmacy network on the other side. And so that pharmacy network is who actually...
+- [13:36] **Speaker 59d538dd**: Provides and delivers the medications. What we provide is software to adjudicate claims, to order the medications, to manage the medications.
+- [13:36] **Speaker 59d538dd**: And then beyond that, what we do for hospices is a very cost-constrained industry. This is an important point for you to think about it in a minute.
+- [13:36] **Speaker 59d538dd**: Very cost constrained and they're not getting relief from the government, it's just becoming harder. So they're always operating at thinner and thinner margins. So something else we do for them.
+- [13:36] **Speaker 59d538dd**: Our current technology, we call them guardrails, we provide ways of creating, I mean, you'd always learn this, we're creating the user behaviors we want.
+- [13:36] **Speaker 59d538dd**: The clinicians, rather than having to make the right decision in the moment, the system is helping them make that right decision and do the right thing. There's a high turmoil.
+- [13:37] **Speaker 59d538dd**: So you've got to assume that your user is always new, they're just new, they're always new, and your user, by the way,
+- [13:37] **Unknown Speaker**: I always tell the team this and tell my team this, they've made a mistake before being in training and saying, hey, refresh your page.
+- [13:37] **Speaker 59d538dd**: So I tell my team all the time, y'all, just remember, think of your mom or your grandmother's least technical friend. That is your user. That's who's using the software.
+- [13:37] **Unknown Speaker**: And so when we do what we help them do for these high turnover situations with nurses who tend to be non-technical, we get very easy to use software.
+- [13:37] **Speaker 59d538dd**: Guardrails so that hospice leaders, the operational leaders, can say this is how we call it philosophy of care. This is our philosophy of care. This is how we like to operate.
+- [13:37] **Speaker 59d538dd**: The nursing staff just makes those decisions within that world. So to give you an example, rather than choosing this med that might be higher cost, we have an equivalent med.
+- [13:38] **Speaker 59d538dd**: It's less expensive, but the same equivalent of power, and so what we'll do is we just change that over for that.
+- [13:38] **Speaker 59d538dd**: So now that we're going into DME, that kind of applies a couple opportunities we have to provide DME.
+- [13:38] **Speaker 59d538dd**: I've gotten to see D&D technology. I haven't seen anything great. There's no doubt in my mind.
+- [13:38] **Speaker 59d538dd**: ...is going to come up with something better. There's just no doubt in my mind. But where I think the real battle is going to be won here on the D&D side is one is the...
+- [13:38] **Unknown Speaker**: You're going to be able to give clinicians into what is happening with the knee. Where is it? Can I order it? What's my inventory level?
+- [13:38] **Unknown Speaker**: I use the example, and y'all can take this to extremes if you want to, but I use the example as the same, as the same Amazon. You know, I just want to pat ourselves on the back for a second.
+- [13:39] **Speaker 59d538dd**: Two years ago, we were the first company in our industry who put real prices in our system. Real prices? Can you imagine? Actually getting to know?
+- [13:39] **Speaker e6dca111**: You're in the medical industry prices but it's different if I have insurance or if I don't right
+- [13:39] **Unknown Speaker**: I mean, if you're dealing outside the hospital space, outside of Medicare, good luck. I don't know. I can't help you there. So just private insurance, good luck for yourself. But yeah, I mean, and we've heard.
+- [13:39] **Speaker 59d538dd**: It was great because you actually heard doctors tell us. I had no idea what the next time. Doctors were telling us that. I didn't know what it would cost until you showed me. So that was helpful. I saved this just to tell you.
+- [13:39] **Speaker 59d538dd**: It can be the same way. So the three decision dynamics that your clinician is making in the moment they're ordering. Number one is I need.
+- [13:39] **Speaker 59d538dd**: I mean, period, amen, right? So I need to know that it's in stock. I need to know when it could be expected to be delivered because that will tell...
+- [13:40] **Speaker 59d538dd**: That's who I should go with. The other decision factor is, is price, right? So consider the Amazon experience, right? If you're going to order.
+- [13:40] **Speaker 59d538dd**: ...are the same, but this one's going to get there faster. You're going to get there faster. So these are some of the decision factors that the clinicians are going to make.
+- [13:40] **Speaker 59d538dd**: What we have to do that's going to separate us, we believe, from the marketplace is we're going to give them those opportunities for selection. We want to be able to give that to them.
+- [13:40] **Speaker 59d538dd**: The way the industry works today is they usually are locked in with a primary vendor if they're lucky enough to have a secondary vendor.
+- [13:40] **Speaker 59d538dd**: And that's the way it works. So they're holding to how this company operates and what they do, which is where you get a lot of these delays.
+- [13:40] **Speaker 59d538dd**: Another slide I just want to mention is something to keep in mind. It may influence how you approach this, it may not, but another thing to keep in mind is that...
+- [13:41] **Unknown Speaker**: One thing to keep in mind is that the three ordering factors, we're going to order and deliver.
+- [13:41] **Speaker 59d538dd**: Yes, that's a key point. And it's the same with us that we have today. We work with pharmacies.
+- [13:41] **Speaker 59d538dd**: What I see is not getting drugs to the fish on time, the hospice is the one that's going to bury.
+- [13:41] **Speaker 59d538dd**: They're the ones who are going to get the bad reputation, not the pharmacy, because no one knows the pharmacy. It's the same here. The hospice is the brunt of it. They're the ones that...
+- [13:41] **Speaker 59d538dd**: For ratings, cap scores, these are survey scores in the hospice industry that help people select which hospice they want to use, they will get deemed.
+- [13:41] **Speaker 59d538dd**: Or DME, not showing up on time, showing up dirty, referring to things like that, showing up in a chair that still has fecal matter in it, things like that.
+- [13:42] **Speaker 59d538dd**: The hostess doesn't own it, right? It's the vendor. And so anything that we can do on our side as a technology provider that helps.
+- [13:42] **Speaker 59d538dd**: a hospice make the right choice and hold them accountable will be important on the vendor side there were some questions in the write-up about the
+- [13:42] **Speaker 59d538dd**: What's happening on the other side, this is actually a gap for us, so I gave you as much as I know, but unfortunately, I don't exactly know what that looks like on their side.
+- [13:42] **Unknown Speaker**: receiving those orders and what they might interact with we assume we're going to be integrating with their software is what we'll be doing there so we don't know that we have to provide
+- [13:42] **Speaker 59d538dd**: We don't know if we do. We also don't know if that's something that we can handle another way via Magic Link or something else. So we're going to let y'all decide.
+- [13:43] **Speaker 59d538dd**: ...assumptions and just defend those assumptions, because your knowledge here is going to be about as good as ours, so go ahead and tackle it that way. All right, that's...
+- [13:43] **Unknown Speaker**: Anything important there is? Great. Anything else on top of mind? Anything to answer for you?
+- [13:43] **Unknown Speaker**: So, we're using general clinician law. Are we talking as an interface directly for a prescribing provider to order or prescribe those?
+- [13:43] **Unknown Speaker**: Or are we looking more like the director of operations for the hospice facility that's going to be managing the improvement of the hospital? That's a fantastic question. And I should have gone through.
+- [13:43] **Unknown Speaker**: So, I'm going to give you three different personas you're willing to think about. These are your key personas in the focus. Your first persona is your admissions nurse. There's usually someone...
+- [13:43] **Speaker 59d538dd**: for admissions and anytime someone's coming out of hospice they're the ones most likely to be the person for redeeming it. So that dean's already been prescribed.
+- [13:44] **Speaker 59d538dd**: Simply order, you've got an oxygen tank, you've got to get a bed in place, they're the ones who make that order. The next persona is your case manager.
+- [13:44] **Speaker 59d538dd**: Case managers want us regularly visiting and seeing their patient. They will do the same thing that the admissions nurses making that order, but they're doing that.
+- [13:44] **Speaker 59d538dd**: When they see progression of the diagnosis and condition, so maybe they didn't need a wheelchair to start, now it's time for a wheelchair, and what they'll need to do is they'll need to get...
+- [13:44] **Speaker 59d538dd**: Driver and ask for that prescription. So maybe we'll say, hey, we believe this condition is ready for a chair. You do that with an IDT meeting.
+- [13:44] **Speaker 59d538dd**: All the nurses are meeting with the physicians and they're saying, this patient, it's time for them to get a chair. The physician writes that prescription up, but then it's the...
+- [13:44] **Speaker 59d538dd**: I'm going to do the ordering in the platform. The third important for someone to know is your director of nursing. They're the one that's...
+- [13:45] **Speaker 59d538dd**: All the staff that I just mentioned are over the admin nurse and the nursing staff that's in the field. And so they're going to be the ones that are going to improve things.
+- [13:45] **Speaker 59d538dd**: I think it's a high cost situation, they have a high cost pressure or something, they do the approvals of that. They're also the ones that are reporting that they're looking at.
+- [13:45] **Speaker 59d538dd**: So I'm not saying you have to go that deep into your solution, but if you do start going that deep where, hey, this is probably somewhere where we want to report, this is probably somewhere where we want to.
+- [13:45] **Speaker 59d538dd**: Know that your persona is a director of nursing and they're responsible for doing the balance of care and cost.
+- [13:45] **Speaker 6f956d2c**: Is the, so you said the doctor prescribes, is it ever, does it ever happen that the nurse says oh we need
+- [13:45] **Speaker 6f956d2c**: And then they need to call the doctor and say, hey, I need you to prescribe something because we really need this. And then I need to order it. Yes. That will happen.
+- [13:46] **Speaker 59d538dd**: And so where that order is entered, is entered into their EMR system, so that's the electronic medical record is the source of data.
+- [13:46] **Speaker 59d538dd**: It is for all orders, or for all restrictions, and for all patient information, and so that's where the prescribers enter that information.
+- [13:46] **Unknown Speaker**: Blow over into our system. Maybe that is a bit more nuanced to your question. First of all, DME is not nearly as regulated as...
+- [13:46] **Unknown Speaker**: That's helpful. But second of all, nurses can have a pre-op from a doctor that allows the nurse to do all the upgrade. Well, to do all the upgrade.
+- [13:46] **Unknown Speaker**: To be honest, you can say anytime they have this symptom, you can go ahead and do it. Controlled substance is totally different, but just a nuance. DMV, open organization, from what we understand.
+- [13:46] **Unknown Speaker**: Oh, okay, cool. It's going to be manageable on the director and nursing side. Which means, if you want ordering capability within the system, not just flow over the front.
+- [13:47] **Unknown Speaker**: Do the DME's have their own pricing for everything, like is this something we should factor in?
+- [13:47] **Unknown Speaker**: Okay, so it's not set by insurance companies or anything? It's not set by the insurance government now. Okay. So the system should open.
+- [13:47] **Unknown Speaker**: To manage the orders, but also order or have the functionality to order something as well, yes
+- [13:47] **Unknown Speaker**: ...right now is mostly one-click, desktop-use, mobile, or as-a-touch. Great question. The primary device for a few applications is going to be...
+- [13:47] **Unknown Speaker**: Sometimes they have tablets and then whoever's at the location is usually the laptop. So you're talking about for them to talk about your admission pad.
+- [13:47] **Unknown Speaker**: It's going to be on the desktop for your field. There's probably not on the website, right? On the website or on the internet? On the website, yes. Website. But I will take either, by the way.
+- [13:48] **Unknown Speaker**: Right now we are web-based, it's a web-based app for pharmacy.
+- [13:48] **Unknown Speaker**: So you're saying the people in the field, they're using their phones, so it means like a web application. Correct.
+- [13:48] **Unknown Speaker**: What's the ideal rating on the process and to begin the items to correct the order and deliver versus the return effect?
+- [13:48] **Unknown Speaker**: What's the weighting on being able to track that pickup and the trigger points that create that in relation to the front end?
+- [13:48] **Unknown Speaker**: Each of those three, in other words, it's out for delivery, it's a ride as a home. Like, how he did it, like, every time he came with me.
+- [13:48] **Unknown Speaker**: but then there's like the pain of like lingering equipment following terminal conditions so then like is the pickup side and
+- [13:49] **Unknown Speaker**: I know it was being a requirement, but I didn't see it much since then. No, and you are right. That is an important part.
+- [13:49] **Unknown Speaker**: The way I always say that, the emotional story behind that is imagine you have a loved one who's passed and then that bed sits in your home for three days and no one comes picked up.
+- [13:49] **Speaker 59d538dd**: Hostess, by the way, pays for it for three days as it sits in this home, so no, you are right, that should be as immediate as possible within 24 hours.
+- [13:49] **Speaker 6f956d2c**: I imagine the hospice probably has certain DME that they have on hands to be able to divvy out immediately.
+- [13:49] **Unknown Speaker**: No, they don't typically care. Maybe a little bit of what I've said, because not everyone has experience with hospice. Most hospice is home.
+- [13:49] **Unknown Speaker**: The office for a hospice is a little box, for like a director of nursing staff, you know, they're not hospitals or facilities, they're nursing homes, so they don't, they just.
+- [13:50] **Speaker 1**: Drugs, they have a very small amount of over-the-counter drugs that come from kids, but they don't have inventory of much of anything. Because it's a nursing home car.
+- [13:50] **Unknown Speaker**: That's the delivery mechanism of hospice, if that makes sense. So she'll keep main meds often because there's comfort kits in her car but she can't carry the bed or anything.
+- [13:50] **Unknown Speaker**: It's all over, it's all over, yeah. Any other questions before we get into logistics?
+- [13:50] **Unknown Speaker**: And this is a great opportunity to just be happy to meet you as smart as possible.
+- [13:50] **Unknown Speaker**: So EPIC is a big hospital system EMR.
+- [13:50] **Unknown Speaker**: Mars, the biggest one is home care, home base, matrix care is another one, so if you want to look up a couple of possibly seen Mars, matrix care, home care, home base.
+- [13:51] **Unknown Speaker**: Access. Those would be the three I'll start with. Well, Scott. Well, Scott as well. So within the EMR, we would have a picture of what are their...
+- [13:51] **Unknown Speaker**: ...and what current problems they may be going through, which could help us understand what types...
+- [13:51] **Speaker 78e83d89**: What they might need and what we might present to it. Yes, and today the information already flows in the better rates. So we already have that in our system today. We have the patient...
+- [13:51] **Unknown Speaker**: We have endologies, I guess, that won't apply to D&D, but we have that information flowing right into there. So we can assume there's no...
+- [13:51] **Unknown Speaker**: We've already done it. We can just put in mock patients that exist already. Yeah, absolutely.
+- [13:51] **Unknown Speaker**: I think we're getting a great concern here on the community center side. We want to cover that data for our delivery.
+- [13:52] **Unknown Speaker**: For the officers who are feeding up to a pharmacy, that is a great thing for all the officers who are in the hospital.
+- [13:52] **Unknown Speaker**: It was, it was a good time, and it was very chronic, so it wasn't much since it was very severe, it was very big. I was like, shit, you can just be too. I don't know. I was like a woman. It wouldn't be too much. I didn't need to problem with a woman. It wasn't too, I don't love you. So, for the other part, I was like, I would haven't forget. My mother, I was like Oh it was a funny night. My father would say it's the thing. Oh, you know, that's right. I don't know. I'm sorry. But, I can't remember it's gonna be wrong. It's a big boy. No, I'm sorry. I just had my life in my heart and I was like, oh!
+- [13:52] **Speaker 1**: meaning that we do have the patient and their diagnosis hospice can get a little backwards meaning sometimes literally the patient they get a call the nurse gets a call
+- [13:52] **Speaker 1**: We admit, and the paperwork is lagging. Just something to know. I don't think you can necessarily put it in front of it, but paperwork does not always land before the patient.
+- [13:52] **Unknown Speaker**: Obviously, this is how they use the term of diagnosis, care matters more than paperwork. So, some logistic things, so...
+- [13:53] **Unknown Speaker**: We're going to hang around, internet will be around with your private contact for questions, and we'll hang out here. But we also, I think we're trying to get a slide set up? Yeah.
+- [13:53] **Unknown Speaker**: I'll send to everyone that same email address that I sent, the frequent ask questions, a Slack invite. We are not Slack people, so you guys may...
+- [13:53] **Speaker 2**: We're teams people, but I just have this kind of a, this is the number of teams here, so we'll get that slack set up, and then that will be how you communicate with us this afternoon.
+- [13:53] **Unknown Speaker**: We'll be available all day. I'm away from home. He's away from home, so you'll be able to get it. Reach us for dinner. It might be a little slower around that time.
+- [13:53] **Unknown Speaker**: It will be reachable, although I will not, for anything that's burning midnight oil going late tonight, I won't be responding at 2am.
+- [13:53] **Unknown Speaker**: Two questions in early, and then we'll be back online tomorrow. And we will try to follow the sort of one-asked answer to everybody that you guys probably have promoted.
+- [13:54] **Speaker 1**: So, meaning we don't need everyone to feel that we're not going to like send a response to just one person. So if we get a question on Slack, just know we intend to answer it publicly so everyone gets that answer.
+- [13:54] **Unknown Speaker**: I'm Todd, I'm Peter, and I'm Eric.
+- [13:54] **Unknown Speaker**: All right, no further questions. Jump in. We're super excited. You guys are helping us with this. It's a big problem, so I appreciate your help.
+- [13:54] **Unknown Speaker**: Thanks for having us here. Thank you. Yeah, geez.
+- [13:54] **Unknown Speaker**: Thank you.
+- [13:54] **Unknown Speaker**: Thank you.
+- [13:55] **Unknown Speaker**: ...
+- [13:55] **Unknown Speaker**: He said that one of the men was out there.
+- [13:55] **Unknown Speaker**: Thank you.
+- [13:55] **Unknown Speaker**: I

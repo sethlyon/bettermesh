@@ -1,0 +1,196 @@
+{% if flash %}<div class="flash">{{ flash }}</div>{% endif %}
+
+{% if role == 'hospice' %}
+{# ---------------- Hospice case manager view ---------------- #}
+<section class="panel">
+  <div class="toolbar">
+    <form class="intake" hx-post="/orders" hx-target="#board" hx-swap="innerHTML">
+      <input class="intake-text" type="text" name="text"
+             placeholder="hospital bed for PT-88421 by tomorrow 2pm" autocomplete="off">
+      <button type="submit">Place order</button>
+    </form>
+    <form class="death" hx-post="/patients/deceased" hx-target="#board" hx-swap="innerHTML">
+      <input class="death-input" type="text" name="patient_id" placeholder="PT-87950" autocomplete="off">
+      <button type="submit" class="ghost">Mark deceased</button>
+    </form>
+    <form hx-post="/reset" hx-target="#board" hx-swap="innerHTML" class="reset">
+      <button type="submit" class="ghost">Reset demo</button>
+    </form>
+  </div>
+
+  {# --- Kanban: three category columns --- #}
+  <div class="columns three">
+    <div class="column">
+      {% set has_attention = (orders | selectattr('at_risk') | list) or (orders | selectattr('is_open') | list) %}
+      <h2 class="group-head attention">Needs attention</h2>
+      {% if not has_attention %}<p class="empty">Nothing needs attention right now.</p>{% endif %}
+      <div class="hgrid">
+        {% for o in orders if o.at_risk or o.is_open %}
+        <div class="hcard {{ 'risk' if o.at_risk else 'awaiting' }}">
+          <div class="hcard-head">
+            <span class="equip">{{ o.equipment_name }}</span>
+            {% if o.at_risk %}<span class="badge badge-risk">At risk</span>
+            {% else %}<span class="badge badge-open">Awaiting vendor</span>{% endif %}
+          </div>
+          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}</div>
+          <div class="hcard-stats">
+            <div><span class="muted">Vendor</span><br>{{ o.vendor or '—' }}</div>
+            <div><span class="muted">Target</span><br>{{ o.target_date | t }}</div>
+            <div><span class="muted">ETA</span><br>{{ o.eta | t }}</div>
+          </div>
+          {% set rec = recommendations.get(o.id) %}
+          {% if rec %}
+          <div class="hcard-rec">
+            <span class="muted">Best match</span>
+            <strong>{{ rec.vendor }}</strong>
+            <span class="{{ 'ok' if rec.meets else 'warn' }}">{{ rec.eta | t }}</span>
+            ({{ 'meets window' if rec.meets else 'would miss' }}) · ${{ '%.0f' | format(rec.price) }}
+          </div>
+          {% endif %}
+          {% if o.at_risk %}
+          <form hx-post="/orders/{{ o.id }}/rebroadcast" hx-target="#board" hx-swap="innerHTML">
+            <button type="submit" class="redispatch">Re-broadcast to network</button>
+          </form>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="column">
+      <h2 class="group-head">In progress</h2>
+      {% if not (orders | selectattr('vendor') | rejectattr('at_risk') | selectattr('status', 'in', ['Ordered','Dispatched','In Transit','Pickup Requested']) | list) %}
+      <p class="empty">No active orders.</p>{% endif %}
+      <div class="hgrid">
+        {% for o in orders if o.vendor and not o.at_risk and o.status not in ['Delivered','Picked Up'] %}
+        <div class="hcard {{ 'pickup' if o.is_pickup else '' }}">
+          <div class="hcard-head">
+            <span class="equip">{{ o.equipment_name }}</span>
+            <span class="badge {{ 'badge-pickup' if o.is_pickup else '' }}">{{ o.status }}</span>
+          </div>
+          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}</div>
+          <div class="hcard-stats">
+            <div><span class="muted">Vendor</span><br>{{ o.vendor }}</div>
+            <div><span class="muted">Target</span><br>{{ o.target_date | t }}</div>
+            <div><span class="muted">ETA</span><br>{{ o.eta | t }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="column">
+      <h2 class="group-head">Completed</h2>
+      {% if not (orders | selectattr('status', 'in', ['Delivered','Picked Up']) | list) %}
+      <p class="empty">Nothing completed yet.</p>{% endif %}
+      <div class="hgrid">
+        {% for o in orders if o.status in ['Delivered','Picked Up'] %}
+        <div class="hcard closed">
+          <div class="hcard-head">
+            <span class="equip">{{ o.equipment_name }}</span>
+            <span class="badge">{{ o.status }}</span>
+          </div>
+          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.vendor or '—' }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% else %}
+{# ---------------- DME dispatcher view (vendor-scoped) ---------------- #}
+<section class="panel dispatcher">
+  <div class="vendor-bar">
+    <span class="vendor-label">Dispatching as</span>
+    <span class="vendor-pill active">{{ vendor }}</span>
+    <form hx-post="/reset" hx-target="#board" hx-swap="innerHTML" class="reset">
+      <button type="submit" class="ghost">Reset demo</button>
+    </form>
+  </div>
+
+  <div class="columns three">
+    {# --- Opportunities the vendor can pull --- #}
+    <div class="column">
+      <h2 class="col-head">Open opportunities <span class="count">{{ opportunities | length }}</span></h2>
+      <p class="col-sub">Orders you stock. Accept to commit if you can make the window.</p>
+      {% if not opportunities %}<p class="empty">No open opportunities you can fill.</p>{% endif %}
+      {% for f in opportunities %}
+      <div class="card opp {{ 'miss' if not f.meets else 'meet' }}">
+        <div class="card-top">
+          <span class="mono">{{ f.order.id }}</span>
+          {% if f.meets %}<span class="badge badge-ok">Can meet</span>
+          {% else %}<span class="badge badge-risk">Would miss</span>{% endif %}
+        </div>
+        <div class="card-body">
+          <strong>{{ f.order.equipment_name }}</strong> <span class="ecode">{{ f.order.equipment_code }}</span><br>
+          <span class="muted">Patient</span> <span class="mono">{{ f.order.patient_id }}</span>
+          · <span class="muted">{{ f.order.order_type }}</span><br>
+          <span class="muted">Target</span> {{ f.order.target_date | t }}
+          · <span class="muted">Your ETA</span> {{ f.eta | t }}
+        </div>
+        <div class="card-actions">
+          <form hx-post="/orders/{{ f.order.id }}/accept" hx-target="#board" hx-swap="innerHTML">
+            <button type="submit" class="{{ '' if f.meets else 'warn' }}">Accept</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {# --- Deliveries this vendor has committed to --- #}
+    <div class="column">
+      <h2 class="col-head">My deliveries <span class="count">{{ my_deliveries | length }}</span></h2>
+      <p class="col-sub">Committed orders in your queue.</p>
+      {% if not my_deliveries %}<p class="empty">No committed deliveries.</p>{% endif %}
+      {% for o in my_deliveries %}
+      <div class="card {{ 'risk' if o.at_risk else '' }}">
+        <div class="card-top">
+          <span class="mono">{{ o.id }}</span>
+          {% if o.at_risk %}<span class="badge badge-risk">At risk</span>
+          {% else %}<span class="badge">{{ o.status }}</span>{% endif %}
+        </div>
+        <div class="card-body">
+          <strong>{{ o.equipment_name }}</strong> <span class="ecode">{{ o.equipment_code }}</span><br>
+          <span class="muted">Patient</span> <span class="mono">{{ o.patient_id }}</span>
+          · <span class="muted">{{ o.order_type }}</span><br>
+          <span class="muted">Target</span> {{ o.target_date | t }}
+          · <span class="muted">ETA</span> {{ o.eta | t }}
+        </div>
+        <div class="card-actions">
+          <form hx-post="/orders/{{ o.id }}/deliver" hx-target="#board" hx-swap="innerHTML">
+            <button type="submit">Mark delivered</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {# --- Pickups routed to this vendor --- #}
+    <div class="column">
+      <h2 class="col-head">Pickup requests <span class="count">{{ pickups | length }}</span></h2>
+      <p class="col-sub">Retrievals assigned to you after a death.</p>
+      {% if not pickups %}<p class="empty">No pickups assigned to you.</p>{% endif %}
+      {% for o in pickups %}
+      <div class="card pickup">
+        <div class="card-top">
+          <span class="mono">{{ o.id }}</span>
+          <span class="badge badge-pickup">Pickup requested</span>
+        </div>
+        <div class="card-body">
+          <strong>{{ o.equipment_name }}</strong> <span class="ecode">{{ o.equipment_code }}</span><br>
+          <span class="muted">Patient</span> <span class="mono">{{ o.patient_id }}</span><br>
+          {% if o.log %}<span class="log">{{ o.log[-1] }}</span>{% endif %}
+        </div>
+        <div class="card-actions">
+          <form hx-post="/orders/{{ o.id }}/pickup-complete" hx-target="#board" hx-swap="innerHTML">
+            <button type="submit" class="confirm">Confirm pickup</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+

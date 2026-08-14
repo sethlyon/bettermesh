@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block board %}
+<section class="panel login-panel">
+  <h1 class="login-title">Sign in</h1>
+  <p class="hint">Use a demo account to continue.</p>
+  {% if error %}<div class="flash flash-error">{{ error }}</div>{% endif %}
+  <form method="post" action="/login" class="login-form">
+    <label class="login-field">
+      <span>Username</span>
+      <input type="text" name="username" autocomplete="username" autofocus required>
+    </label>
+    <label class="login-field">
+      <span>Password</span>
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit">Log in</button>
+  </form>
+</section>
+<style>
+  .login-panel { max-width: 380px; margin: 60px auto; }
+  .login-title { margin: 0 0 4px; color: var(--navy); font-size: 20px; }
+  .login-form { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+  .login-field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted); }
+  .login-field input {
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .login-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10, 163, 160, 0.15);
+  }
+  .flash-error { background: #fdecec; border-color: #f3b7ba; color: var(--risk); }
+</style>
+{% endblock %}
