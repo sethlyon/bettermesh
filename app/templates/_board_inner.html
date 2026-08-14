@@ -13,6 +13,7 @@
         {% endfor %}
       </select>
       <input class="intake-patient" type="text" name="patient_id" placeholder="PT-88421" autocomplete="off" required>
+      <input class="intake-address" type="text" name="address" placeholder="Delivery address" autocomplete="off">
       <input class="intake-target" type="datetime-local" name="target_date" required>
       <button type="submit">Place order</button>
     </form>
@@ -136,6 +137,9 @@
           · <span class="muted">{{ f.order.order_type }}</span><br>
           <span class="muted">Target</span> {{ f.order.target_date | t }}
           · <span class="muted">Your ETA</span> {{ f.eta | t }}
+          {% if f.order.address %}<br><span class="muted">Deliver to</span> {{ f.order.address }}{% endif %}
+          {% if f.order.contact_phone %} · {{ f.order.contact_phone }}{% endif %}
+          {% if f.order.equipment_notes %}<br><span class="muted">Notes</span> {{ f.order.equipment_notes }}{% endif %}
         </div>
         <div class="card-actions">
           <form hx-post="/orders/{{ f.order.id }}/accept" hx-target="#board" hx-swap="innerHTML">
@@ -164,6 +168,9 @@
           · <span class="muted">{{ o.order_type }}</span><br>
           <span class="muted">Target</span> {{ o.target_date | t }}
           · <span class="muted">ETA</span> {{ o.eta | t }}
+          {% if o.address %}<br><span class="muted">Deliver to</span> {{ o.address }}{% endif %}
+          {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}
+          {% if o.equipment_notes %}<br><span class="muted">Notes</span> {{ o.equipment_notes }}{% endif %}
         </div>
         <div class="card-actions">
           <form hx-post="/orders/{{ o.id }}/deliver" hx-target="#board" hx-swap="innerHTML">
@@ -188,6 +195,8 @@
         <div class="card-body">
           <strong>{{ o.equipment_name }}</strong> <span class="ecode">{{ o.equipment_code }}</span><br>
           <span class="muted">Patient</span> <span class="mono">{{ o.patient_id }}</span><br>
+          {% if o.address %}<span class="muted">Pick up at</span> {{ o.address }}
+          {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}<br>{% endif %}
           {% if o.log %}<span class="log">{{ o.log[-1] }}</span>{% endif %}
         </div>
         <div class="card-actions">

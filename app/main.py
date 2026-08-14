@@ -286,6 +286,7 @@ def create_order(
     equipment_code: str = Form(...),
     patient_id: str = Form(...),
     target_date: str = Form(...),
+    address: str = Form(""),
 ):
     user = _current_user(request)
     if user is None:
@@ -311,6 +312,7 @@ def create_order(
         status=ORDERED,
         ordered_at=datetime.now(),
         target_date=target,
+        address=address.strip(),
     )
     order.log.append("manual fallback entry — not yet on a discharge record")
     store.add(order)
@@ -339,6 +341,9 @@ def _order_json(o: Order) -> dict:
         "eta": o.eta.isoformat() if o.eta else None,
         "at_risk": o.at_risk,
         "is_pickup": o.is_pickup,
+        "address": o.address,
+        "contact_phone": o.contact_phone,
+        "equipment_notes": o.equipment_notes,
     }
 
 
@@ -373,6 +378,9 @@ async def webhook_pre_discharge_order(request: Request):
     hospice = str(body.get("hospice", "")).strip()
     order_type = str(body.get("order_type", "Admission")).strip() or "Admission"
     equipment_codes = body.get("equipment_codes") or []
+    address = str(body.get("address", "")).strip()
+    contact_phone = str(body.get("contact_phone", "")).strip()
+    equipment_notes = str(body.get("equipment_notes", "")).strip()
     try:
         target = datetime.fromisoformat(body["target_date"]) if body.get("target_date") else None
     except (ValueError, KeyError):
@@ -381,6 +389,12 @@ async def webhook_pre_discharge_order(request: Request):
     if not patient_id or not hospice or not equipment_codes or target is None:
         return HTMLResponse(
             '{"error": "patient_id, hospice, equipment_codes, and target_date are required"}',
+            status_code=400,
+            media_type="application/json",
+        )
+    if not address:
+        return HTMLResponse(
+            '{"error": "address is required — a DME vendor cannot fulfill an order without a delivery address"}',
             status_code=400,
             media_type="application/json",
         )
@@ -398,6 +412,9 @@ async def webhook_pre_discharge_order(request: Request):
             status=ORDERED,
             ordered_at=datetime.now(),
             target_date=target,
+            address=address,
+            contact_phone=contact_phone,
+            equipment_notes=equipment_notes,
         )
         order.log.append(f"received via pre-discharge webhook from {hospice}")
         store.add(order)

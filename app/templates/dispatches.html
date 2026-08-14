@@ -17,14 +17,19 @@
       </select>
     </div>
     <div class="filter-group">
-      <label>Equipment type</label>
-      <div class="filter-checks">
-        {% for code, name in equipment.items() %}
-        <label>
-          <input type="checkbox" name="equipment_code" value="{{ code }}" {{ 'checked' if code in selected_equipment }}>
-          {{ name }}
-        </label>
-        {% endfor %}
+      <label id="equip-ms-label">Equipment type</label>
+      <div class="ms-dropdown" id="equip-ms">
+        <button type="button" class="ms-toggle" id="equip-ms-toggle" aria-haspopup="listbox" aria-expanded="false">
+          All types
+        </button>
+        <div class="ms-panel" id="equip-ms-panel" role="listbox" aria-labelledby="equip-ms-label" hidden>
+          {% for code, name in equipment.items() %}
+          <label class="ms-option">
+            <input type="checkbox" name="equipment_code" value="{{ code }}" {{ 'checked' if code in selected_equipment }}>
+            {{ name }} <span class="ecode">{{ code }}</span>
+          </label>
+          {% endfor %}
+        </div>
       </div>
     </div>
     <div class="filter-actions">
@@ -32,6 +37,34 @@
       <a class="btn-link" href="/dispatches">Clear</a>
     </div>
   </form>
+
+  <script>
+    (function () {
+      var wrap = document.getElementById('equip-ms');
+      var toggle = document.getElementById('equip-ms-toggle');
+      var panel = document.getElementById('equip-ms-panel');
+      var checks = panel.querySelectorAll('input[type=checkbox]');
+
+      function summarize() {
+        var checked = Array.prototype.filter.call(checks, function (c) { return c.checked; });
+        if (checked.length === 0) toggle.textContent = 'All types';
+        else if (checked.length === 1) toggle.textContent = checked[0].parentElement.textContent.trim();
+        else toggle.textContent = checked.length + ' types selected';
+      }
+
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var isOpen = !panel.hidden;
+        panel.hidden = isOpen;
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+      document.addEventListener('click', function (e) {
+        if (!wrap.contains(e.target)) { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); }
+      });
+      Array.prototype.forEach.call(checks, function (c) { c.addEventListener('change', summarize); });
+      summarize();
+    })();
+  </script>
 
   {% if not orders %}
   <p class="empty">No dispatches match these filters.</p>
@@ -46,6 +79,7 @@
         <th>Type</th>
         <th>Status</th>
         <th>Vendor</th>
+        <th>Address</th>
         <th>Target</th>
         <th>ETA</th>
       </tr>
@@ -65,6 +99,7 @@
           {{ o.status }}{% if o.at_risk %} <span class="badge badge-risk">At risk</span>{% endif %}
         </td>
         <td>{{ o.vendor or '—' }}</td>
+        <td>{{ o.address or '—' }}</td>
         <td>{{ o.target_date | t }}</td>
         <td>{{ o.eta | t }}</td>
       </tr>

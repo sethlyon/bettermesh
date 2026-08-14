@@ -69,6 +69,7 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 .intake-text { flex: 1; }
 .intake-equipment { width: 150px; }
 .intake-patient { width: 130px; }
+.intake-address { width: 190px; }
 .intake-target { width: 190px; }
 .death { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .death-input { width: 130px; }
@@ -255,12 +256,6 @@ button.redispatch:hover { background: #b83842; }
 }
 .filter-group { display: flex; flex-direction: column; gap: 6px; }
 .filter-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
-.filter-checks { display: flex; gap: 12px; flex-wrap: wrap; }
-.filter-checks label {
-  display: flex; align-items: center; gap: 6px;
-  font-size: 13px; text-transform: none; letter-spacing: normal; color: var(--text);
-  cursor: pointer;
-}
 .filters select {
   padding: 8px 10px;
   border: 1px solid var(--line);
@@ -269,6 +264,45 @@ button.redispatch:hover { background: #b83842; }
   min-width: 180px;
 }
 .filters .filter-actions { align-self: flex-end; display: flex; gap: 8px; }
+
+.ms-dropdown { position: relative; }
+.ms-toggle {
+  display: block;
+  min-width: 200px;
+  text-align: left;
+  padding: 8px 30px 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
+  color: var(--text);
+  font-weight: 400;
+  cursor: pointer;
+}
+.ms-toggle:hover { background-color: #f8fafc; }
+.ms-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 240px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(11, 46, 79, 0.12);
+  padding: 6px;
+}
+.ms-option {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px;
+  font-size: 13px;
+  color: var(--text);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ms-option:hover { background: #f1f5f9; }
 
 table.dispatch-table { width: 100%; border-collapse: collapse; }
 table.dispatch-table th, table.dispatch-table td {

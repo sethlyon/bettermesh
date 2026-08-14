@@ -1,7 +1,13 @@
 {% extends "care_platform/base.html" %}
 {% block content %}
-<h1 style="margin-top:0;">Patient Roster</h1>
-<p class="muted">Select a patient to open their chart.</p>
+<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+  <div>
+    <h1 style="margin:0;">Patient Roster</h1>
+    <p class="muted" style="margin:4px 0 0;">Select a patient to open their chart.</p>
+  </div>
+  <a class="btn" href="{{ bettermesh_url }}" target="_blank" rel="noopener">Open BetterMesh &rarr;</a>
+</div>
+<p class="muted" style="margin-top:4px;">Track every dispatch and pickup across all patients &mdash; sign in with your hospice account.</p>
 
 <div class="panel" style="padding: 0; overflow: hidden;">
   <table>

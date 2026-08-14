@@ -71,6 +71,7 @@ def patient_list(request: Request):
             "hospice": hospice,
             "patients": patients_for(slug),
             "hospice_qs": f"?hospice={slug}" if request.query_params.get("hospice") else "",
+            "bettermesh_url": _bettermesh_origin(request) + "/",
         },
     )
 

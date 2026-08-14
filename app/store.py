@@ -44,15 +44,19 @@ CREATE TABLE IF NOT EXISTS orders (
     vendor TEXT,
     eta TEXT,
     is_pickup INTEGER NOT NULL,
-    log TEXT NOT NULL
+    log TEXT NOT NULL,
+    address TEXT NOT NULL DEFAULT '',
+    contact_phone TEXT NOT NULL DEFAULT '',
+    equipment_notes TEXT NOT NULL DEFAULT ''
 );
 """
 
 _UPSERT_SQL = """
 INSERT INTO orders (
     id, patient_id, hospice, equipment_code, order_type, status,
-    ordered_at, target_date, vendor, eta, is_pickup, log
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ordered_at, target_date, vendor, eta, is_pickup, log,
+    address, contact_phone, equipment_notes
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     patient_id=excluded.patient_id,
     hospice=excluded.hospice,
@@ -64,7 +68,10 @@ ON CONFLICT(id) DO UPDATE SET
     vendor=excluded.vendor,
     eta=excluded.eta,
     is_pickup=excluded.is_pickup,
-    log=excluded.log
+    log=excluded.log,
+    address=excluded.address,
+    contact_phone=excluded.contact_phone,
+    equipment_notes=excluded.equipment_notes
 """
 
 # Process-local cache of live Order objects, mirrored to SQLite. None until
@@ -100,6 +107,9 @@ def _row_to_order(row: tuple) -> Order:
         eta,
         is_pickup,
         log,
+        address,
+        contact_phone,
+        equipment_notes,
     ) = row
     return Order(
         id=id_,
@@ -114,6 +124,9 @@ def _row_to_order(row: tuple) -> Order:
         eta=_str_to_dt(eta),
         is_pickup=bool(is_pickup),
         log=json.loads(log),
+        address=address,
+        contact_phone=contact_phone,
+        equipment_notes=equipment_notes,
     )
 
 
@@ -131,6 +144,9 @@ def _order_to_params(order: Order) -> tuple:
         _dt_to_str(order.eta),
         int(order.is_pickup),
         json.dumps(order.log),
+        order.address,
+        order.contact_phone,
+        order.equipment_notes,
     )
 
 
@@ -183,6 +199,8 @@ def seed() -> None:
             status=ORDERED,
             ordered_at=_mins(-90),
             target_date=datetime.now().replace(second=0, microsecond=0) + timedelta(days=1),
+            address="118 Larkspur Ln, Springfield",
+            contact_phone="(555) 201-4487",
         ),
         # 2. Dispatched, routine, on track.
         Order(
@@ -196,6 +214,8 @@ def seed() -> None:
             target_date=_mins(120),
             vendor="Sample Vendor 1",
             eta=_mins(80),
+            address="47 Birchwood Ct, Springfield",
+            contact_phone="(555) 388-2210",
         ),
         # 3. In transit but AT RISK: ETA misses the discharge window. (The star.)
         Order(
@@ -209,6 +229,9 @@ def seed() -> None:
             target_date=_mins(60),
             vendor="Sample Vendor 2",
             eta=_mins(100),
+            address="902 Cardinal Way, Springfield",
+            contact_phone="(555) 674-9053",
+            equipment_notes="High-flow, 5L/min",
         ),
         # 4. Delivered, closed.
         Order(
@@ -222,6 +245,9 @@ def seed() -> None:
             target_date=_today_at(12, 0) - timedelta(days=1),
             vendor="Sample Vendor 1",
             eta=_today_at(11, 15) - timedelta(days=1),
+            address="15 Foxglove Ter, Springfield",
+            contact_phone="(555) 512-7734",
+            equipment_notes="Bariatric frame, 450lb capacity",
         ),
         # 5. Pickup requested after a death (post-death lifecycle stage).
         Order(
@@ -235,6 +261,8 @@ def seed() -> None:
             target_date=_mins(360),
             vendor="Sample Vendor 1",
             is_pickup=True,
+            address="330 Hollowbrook Dr, Springfield",
+            contact_phone="(555) 447-6621",
         ),
         # 6. Open opportunity: STAT, unassigned. Only a fast vendor can meet it.
         Order(
@@ -246,6 +274,9 @@ def seed() -> None:
             status=ORDERED,
             ordered_at=_mins(-10),
             target_date=_mins(120),
+            address="61 Thistledown Rd, Springfield",
+            contact_phone="(555) 293-8814",
+            equipment_notes="Portable concentrator preferred, 2nd floor walk-up",
         ),
     ]
     _CACHE = {o.id: o for o in orders}

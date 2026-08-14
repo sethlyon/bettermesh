@@ -74,6 +74,13 @@ class Order:
     eta: datetime | None = None
     is_pickup: bool = False
     log: list[str] = field(default_factory=list)
+    # What a DME vendor actually needs to fulfill the order: where it goes and
+    # who to call. Deliberately not clinical — no diagnosis, no care level.
+    # equipment_notes covers the one case where a little clinical detail earns
+    # its way in: sizing (bed weight capacity, wheelchair width, O2 flow rate).
+    address: str = ""
+    contact_phone: str = ""
+    equipment_notes: str = ""
 
     @property
     def equipment_name(self) -> str:

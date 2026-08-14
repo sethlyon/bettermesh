@@ -1,8 +1,13 @@
 {% extends "care_platform/base.html" %}
 {% block content %}
-<a class="muted" href="/care-platform/{{ hospice_qs }}">&larr; Back to roster</a>
-<h1 style="margin-bottom:4px;">{{ patient.name }}</h1>
-<p class="muted" style="margin-top:0;">{{ patient.id }} &middot; MRN {{ patient.mrn }} &middot; DOB {{ patient.dob }}</p>
+<div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+  <div>
+    <a class="muted" href="/care-platform/{{ hospice_qs }}">&larr; Back to roster</a>
+    <h1 style="margin-bottom:4px;">{{ patient.name }}</h1>
+    <p class="muted" style="margin-top:0;">{{ patient.id }} &middot; MRN {{ patient.mrn }} &middot; DOB {{ patient.dob }}</p>
+  </div>
+  <a class="btn" href="{{ status_url }}" target="_blank" rel="noopener">View in BetterMesh &rarr;</a>
+</div>
 
 <div class="panel">
   <table>
@@ -12,6 +17,8 @@
     <tr><th>Level of care</th><td>{{ patient.care_level }}</td></tr>
     <tr><th>Case manager</th><td>{{ patient.case_manager }}</td></tr>
     <tr><th>Attending physician</th><td>{{ patient.physician }}</td></tr>
+    <tr><th>Home address</th><td>{{ patient.address }}</td></tr>
+    <tr><th>Contact phone</th><td>{{ patient.contact_phone }}</td></tr>
   </table>
 </div>
 
@@ -107,6 +114,8 @@
   var SECRET = {{ webhook_secret | tojson }};
   var PATIENT_ID = {{ patient.id | tojson }};
   var HOSPICE_NAME = {{ hospice.name | tojson }};
+  var PATIENT_ADDRESS = {{ patient.address | tojson }};
+  var PATIENT_PHONE = {{ patient.contact_phone | tojson }};
   var STATUS_URL = {{ status_url | tojson }};
   var EQUIPMENT_OPTIONS = {{ equipment_options | tojson }};
   var PENDING_NEEDS = {{ pending_needs | tojson }};
@@ -165,7 +174,8 @@
     post('/webhook/pre-discharge-order', {
       patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
       order_type: HAS_URGENT ? 'STAT' : 'Admission',
-      equipment_codes: codes, target_date: target
+      equipment_codes: codes, target_date: target,
+      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE
     }).then(function () {
       document.getElementById('dispatch-form').style.display = 'none';
       document.getElementById('dispatch-success').style.display = 'block';
@@ -181,7 +191,8 @@
     var btn = this; btn.disabled = true; btn.textContent = 'Submitting…';
     post('/webhook/pre-discharge-order', {
       patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
-      order_type: 'Admission', equipment_codes: codes, target_date: target
+      order_type: 'Admission', equipment_codes: codes, target_date: target,
+      address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE
     }).then(function () {
       document.getElementById('menu-success').style.display = 'block';
       btn.style.display = 'none';

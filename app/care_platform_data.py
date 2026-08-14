@@ -111,6 +111,8 @@ class Patient:
     care_level: str
     case_manager: str
     physician: str
+    address: str
+    contact_phone: str
     equipment_needs: list[EquipmentNeed] = field(default_factory=list)
     status: str = "Active in Care"  # or "Deceased" — Thistlemoor's demo toggles this
 
@@ -131,18 +133,21 @@ PATIENTS: dict[str, Patient] = {
         id="PT-88421", name="Thomas Delacroix", dob="1948-03-11", mrn="AP-40217",
         hospice_slug="anchorpoint", admission_date="2026-08-12", primary_diagnosis="CHF, end-stage",
         care_level="Routine Home Care", case_manager="Renee Okafor, RN", physician="Dr. A. Whitfield",
+        address="118 Larkspur Ln, Springfield", contact_phone="(555) 201-4487",
         equipment_needs=[EquipmentNeed("E0250", "Hospital Bed", "Dr. A. Whitfield", "2026-08-12", dispatched=True)],
     ),
     "PT-88502": Patient(
         id="PT-88502", name="Carol Iwu", dob="1955-11-02", mrn="AP-40289",
         hospice_slug="anchorpoint", admission_date="2026-08-13", primary_diagnosis="COPD, severe",
         care_level="Continuous Home Care", case_manager="Renee Okafor, RN", physician="Dr. M. Sandoval",
+        address="902 Cardinal Way, Springfield", contact_phone="(555) 674-9053",
         equipment_needs=[EquipmentNeed("E0601", "CPAP / Oxygen Concentrator", "Dr. M. Sandoval", "2026-08-13", dispatched=True)],
     ),
     "PT-88710": Patient(
         id="PT-88710", name="Harold Fennimore", dob="1941-07-19", mrn="AP-40301",
         hospice_slug="anchorpoint", admission_date="2026-08-14", primary_diagnosis="COPD exacerbation",
         care_level="Routine Home Care", case_manager="Devon Marsh, RN", physician="Dr. M. Sandoval",
+        address="61 Thistledown Rd, Springfield", contact_phone="(555) 293-8814",
         equipment_needs=[EquipmentNeed("E0601", "CPAP / Oxygen Concentrator", "Dr. M. Sandoval", "2026-08-14", dispatched=True)],
     ),
     # NEW — fresh dispatch demo patient for Anchorpoint
@@ -150,6 +155,7 @@ PATIENTS: dict[str, Patient] = {
         id="PT-89112", name="Miriam Castellano", dob="1952-09-24", mrn="AP-40355",
         hospice_slug="anchorpoint", admission_date="2026-08-14", primary_diagnosis="Metastatic breast cancer",
         care_level="Routine Home Care", case_manager="Devon Marsh, RN", physician="Dr. A. Whitfield",
+        address="245 Bellmoor Ave, Springfield", contact_phone="(555) 118-3392",
         equipment_needs=[EquipmentNeed("E1130", "Wheelchair", "Dr. A. Whitfield", "2026-08-14", dispatched=False)],
     ),
 
@@ -158,12 +164,14 @@ PATIENTS: dict[str, Patient] = {
         id="PT-88190", name="Nadia Petrov", dob="1960-01-30", mrn="CR-71042",
         hospice_slug="cedarridge", admission_date="2026-08-11", primary_diagnosis="ALS",
         care_level="Routine Home Care", case_manager="Sam Lindqvist, RN", physician="Dr. K. Obuya",
+        address="47 Birchwood Ct, Springfield", contact_phone="(555) 388-2210",
         equipment_needs=[EquipmentNeed("E1130", "Wheelchair", "Dr. K. Obuya", "2026-08-11", dispatched=True)],
     ),
     "PT-87720": Patient(
         id="PT-87720", name="Earl Whitcombe", dob="1937-05-08", mrn="CR-71005",
         hospice_slug="cedarridge", admission_date="2026-08-05", primary_diagnosis="Advanced dementia",
         care_level="Routine Home Care", case_manager="Sam Lindqvist, RN", physician="Dr. K. Obuya",
+        address="330 Hollowbrook Dr, Springfield", contact_phone="(555) 447-6621",
         equipment_needs=[EquipmentNeed("E0250", "Hospital Bed", "Dr. K. Obuya", "2026-08-05", dispatched=True)],
     ),
     # A-LA-CARTE demo patient for Cedar Ridge: established in care, condition
@@ -174,6 +182,7 @@ PATIENTS: dict[str, Patient] = {
         id="PT-89204", name="Walter Osei", dob="1944-12-02", mrn="CR-71098",
         hospice_slug="cedarridge", admission_date="2026-07-30", primary_diagnosis="End-stage renal disease",
         care_level="Continuous Home Care", case_manager="Priya Chandran, RN", physician="Dr. L. Fournier",
+        address="12 Windmere Cir, Springfield", contact_phone="(555) 902-1187",
         equipment_needs=[EquipmentNeed("E0601", "CPAP / Oxygen Concentrator", "Dr. L. Fournier", "2026-08-14", dispatched=False, urgent=True)],
     ),
 
@@ -184,6 +193,7 @@ PATIENTS: dict[str, Patient] = {
         id="PT-87950", name="Agnes Pruitt", dob="1933-02-14", mrn="TM-15588",
         hospice_slug="thistlemoor", admission_date="2026-08-02", primary_diagnosis="Advanced Parkinson's",
         care_level="Routine Home Care", case_manager="Ines Faraday, RN", physician="Dr. R. Okonkwo",
+        address="15 Foxglove Ter, Springfield", contact_phone="(555) 512-7734",
         equipment_needs=[EquipmentNeed("E0250", "Hospital Bed", "Dr. R. Okonkwo", "2026-08-02", dispatched=True)],
     ),
 }

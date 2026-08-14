@@ -166,6 +166,8 @@ def mark_deceased(patient_id: str) -> tuple[int, list[str]]:
                 target_date=datetime.now() + timedelta(hours=24),
                 vendor=order.vendor,
                 is_pickup=True,
+                address=order.address,
+                contact_phone=order.contact_phone,
             )
             pickup.log.append(
                 f"{_stamp()} auto-created on death of {patient_id}; "
