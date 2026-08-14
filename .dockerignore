@@ -3,9 +3,7 @@ __pycache__/
 **/__pycache__/
 *.pyc
 *.db
-.env
-.DS_Store
-**/.DS_Store
-__MACOSX/
+.git/
+docs/
 node_modules/
 .wrangler/

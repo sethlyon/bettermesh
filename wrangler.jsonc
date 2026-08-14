@@ -1,0 +1,30 @@
+{
+  "name": "bettermesh",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-14",
+  "compatibility_flags": ["nodejs_compat"],
+  "routes": [
+    { "pattern": "bettermesh.theslyon.com", "custom_domain": true }
+  ],
+  "containers": [
+    {
+      "class_name": "BetterMeshContainer",
+      "image": "./Dockerfile",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "BETTERMESH_CONTAINER",
+        "class_name": "BetterMeshContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["BetterMeshContainer"]
+    }
+  ]
+}

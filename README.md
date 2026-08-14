@@ -3,6 +3,8 @@
 Closed-network DME dispatch for hospices. FastAPI + HTMX, SQLite-backed.
 Built for AI Builder Day (BetterRX bounty — DME Ordering and Visibility Challenge).
 
+**Live:** [bettermesh.theslyon.com](https://bettermesh.theslyon.com)
+
 See [`docs/pitch.md`](docs/pitch.md) for the full pitch and
 [`docs/betterrx-notes.md`](docs/betterrx-notes.md) for the planning/decision log
 (reasoning trail, open questions, and everything learned from the bounty FAQ and
@@ -53,6 +55,27 @@ uvicorn app.main:app --reload
 ```
 
 Open http://127.0.0.1:8000 — you'll be redirected to `/login`.
+
+## Deploy (Cloudflare Containers)
+
+The app runs as-is (unmodified) inside a Cloudflare Container, fronted by a thin
+Worker (`src/index.ts`) that routes every request to a single named container
+instance — the app's SQLite store and login sessions need to live in one process,
+not be sharded per request. Requires the **Workers Paid** plan (Containers isn't
+available on Free) and Docker running locally to build the image.
+
+```bash
+npm install
+npx wrangler secret put SESSION_SECRET      # paste a random value
+npx wrangler secret put ANTHROPIC_API_KEY   # optional, enables live LLM intake
+npx wrangler deploy
+```
+
+`wrangler.jsonc` binds `bettermesh.theslyon.com` as a custom domain — Cloudflare
+provisions the DNS record automatically on first deploy as long as the zone is on
+the same account as the Worker. First request after a period of inactivity has a
+cold-start delay (container spinning up from zero instances); subsequent requests
+are fast.
 
 Optional environment variables (see `.env.example` at the repo root's parent
 workspace, or just export directly):
