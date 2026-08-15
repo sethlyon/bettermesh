@@ -19,6 +19,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
+from . import sso
 from .care_platform_data import (
     DEFAULT_HOSPICE_SLUG,
     HOSPICES,
@@ -67,6 +68,13 @@ def _webhook_secret() -> str:
     return os.environ.get("WEBHOOK_SECRET", "dev-insecure-webhook-secret-change-me")
 
 
+def _bettermesh_sso_url(request: Request, slug: str, next_path: str) -> str:
+    """A signed link straight into BetterMesh, already logged in as this
+    hospice's account — see app/sso.py for the signature BetterMesh checks."""
+    params = {"hospice": slug, "sig": sso.sign(slug), "next": next_path}
+    return f"{_bettermesh_origin(request)}/sso?{urlencode(params)}"
+
+
 @router.get("/", response_class=HTMLResponse)
 def patient_list(request: Request):
     slug = _resolve_hospice_slug(request)
@@ -78,7 +86,7 @@ def patient_list(request: Request):
             "hospice": hospice,
             "patients": patients_for(slug),
             "hospice_qs": f"?hospice={slug}" if request.query_params.get("hospice") else "",
-            "bettermesh_url": _bettermesh_origin(request) + "/",
+            "bettermesh_url": _bettermesh_sso_url(request, slug, "/"),
             "recent_notifications": list(reversed(_RECENT_NOTIFICATIONS.get(slug, []))),
         },
     )
@@ -96,7 +104,7 @@ def patient_record(patient_id: str, request: Request):
             "care_platform/not_found.html", {"request": request, "hospice": hospice, "hospice_qs": qs}, status_code=404
         )
 
-    status_url = f"{_bettermesh_origin(request)}/?{urlencode({'patient': patient.id})}"
+    status_url = _bettermesh_sso_url(request, slug, f"/?{urlencode({'patient': patient.id})}")
     pending_needs = [
         {"code": n.code, "name": n.name, "urgent": n.urgent}
         for n in patient.equipment_needs

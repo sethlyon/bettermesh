@@ -41,7 +41,11 @@
             {% if o.at_risk %}<span class="badge badge-risk">At risk</span>
             {% else %}<span class="badge badge-open">Awaiting vendor</span>{% endif %}
           </div>
-          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}</div>
+          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}
+            {% if o.address %}<br><span class="muted">Deliver to</span> {{ o.address }}{% endif %}
+            {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}
+            {% if o.equipment_notes %}<br><span class="muted">Notes</span> {{ o.equipment_notes }}{% endif %}
+          </div>
           <div class="hcard-stats">
             <div><span class="muted">Vendor</span><br>{{ o.vendor or '—' }}</div>
             <div><span class="muted">Target</span><br>{{ o.target_date | t }}</div>
@@ -83,7 +87,11 @@
             <span class="equip">{{ o.equipment_name }}</span>
             <span class="badge {{ 'badge-pickup' if o.is_pickup else '' }}">{{ o.status }}</span>
           </div>
-          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}</div>
+          <div class="hcard-meta"><span class="mono">{{ o.id }}</span> · {{ o.patient_id }} · {{ o.order_type }}
+            {% if o.address %}<br><span class="muted">{{ 'Pick up at' if o.is_pickup else 'Deliver to' }}</span> {{ o.address }}{% endif %}
+            {% if o.contact_phone %} · {{ o.contact_phone }}{% endif %}
+            {% if o.equipment_notes %}<br><span class="muted">Notes</span> {{ o.equipment_notes }}{% endif %}
+          </div>
           <div class="hcard-stats">
             <div><span class="muted">Vendor</span><br>{{ o.vendor }}</div>
             <div><span class="muted">Target</span><br>{{ o.target_date | t }}</div>

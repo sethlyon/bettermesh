@@ -12,13 +12,30 @@
     .logout-form { margin: 0; }
     .logout-form button.ghost { color: #b7c6d8; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
     .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+    .hospice-mark { height: 26px; width: auto; border-radius: 4px; background: #fff; padding: 2px 4px; }
+    {% if hospice_brand %}
+    :root {
+      --bg: {{ hospice_brand.bg }};
+      --panel: {{ hospice_brand.panel }};
+      --line: {{ hospice_brand.line }};
+      --text: {{ hospice_brand.ink }};
+      --muted: {{ hospice_brand.muted }};
+      --accent: {{ hospice_brand.accent }};
+      --accent-dark: {{ hospice_brand.accent }};
+    }
+    {% endif %}
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <span class="brand-main">BetterMesh</span>
+      {% if hospice_brand %}
+      <img class="hospice-mark" src="/static/logos/{{ hospice_brand.logo }}" alt="{{ hospice_brand.name }}">
+      <span class="brand-sub">{{ hospice_brand.name }}</span>
+      {% else %}
       <span class="brand-sub">by BetterRX</span>
+      {% endif %}
     </div>
     {% if user %}
     <nav class="roles">

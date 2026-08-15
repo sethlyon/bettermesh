@@ -315,6 +315,10 @@ table.dispatch-table th {
   font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted);
 }
 table.dispatch-table tr.at-risk { background: var(--risk-bg); }
+table.dispatch-table tr.dispatch-row { cursor: pointer; }
+table.dispatch-table tr.dispatch-row:hover { background: #f1f5f9; }
+table.dispatch-table tr.dispatch-row.at-risk:hover { background: #fbdada; }
+table.dispatch-table tr.dispatch-row:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 
 

@@ -86,7 +86,9 @@
     </thead>
     <tbody>
       {% for o in orders %}
-      <tr class="{{ 'at-risk' if o.at_risk }}">
+      <tr class="dispatch-row {{ 'at-risk' if o.at_risk }}" tabindex="0"
+          onclick="window.location='/?patient={{ o.patient_id }}'"
+          onkeydown="if (event.key === 'Enter') window.location='/?patient={{ o.patient_id }}';">
         <td class="mono">{{ o.id }}</td>
         <td>{{ o.patient_id }}</td>
         <td>{{ o.hospice }}</td>

@@ -20,8 +20,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
-from . import auth, dispatch, store
+from . import auth, dispatch, sso, store
+from .care_platform import patient_list as care_platform_patient_list
 from .care_platform import router as care_platform_router
+from .care_platform_data import HOSPICES, HOSTNAME_TO_SLUG
 from .models import (
     ACTIVE_DELIVERY_STATES,
     EQUIPMENT,
@@ -88,6 +90,16 @@ def _login_required_response() -> HTMLResponse:
     return resp
 
 
+# Order.hospice / User.hospice hold the same display name HospiceBrand.name
+# uses, so a hospice-scoped BetterMesh login can carry the same logo/palette
+# shown on that hospice's own care-platform site.
+_BRAND_BY_HOSPICE_NAME = {b.name: b for b in HOSPICES.values()}
+
+
+def _hospice_brand(user: auth.User):
+    return _BRAND_BY_HOSPICE_NAME.get(user.hospice) if user.hospice else None
+
+
 def _board_ctx(request: Request, user: auth.User, flash: str = "", highlight_patient: str = "") -> dict:
     orders = store.all_orders()
     if user.role == "hospice" and user.hospice:
@@ -100,6 +112,7 @@ def _board_ctx(request: Request, user: auth.User, flash: str = "", highlight_pat
         "flash": flash,
         "highlight_patient": highlight_patient,
         "equipment": EQUIPMENT,
+        "hospice_brand": _hospice_brand(user),
     }
 
     if user.role == "hospice":
@@ -129,6 +142,25 @@ def _safe_next(next_path: str | None) -> str:
     if next_path and next_path.startswith("/") and not next_path.startswith("//"):
         return next_path
     return "/"
+
+
+@app.get("/sso")
+def sso_login(request: Request, hospice: str, sig: str, next: Optional[str] = None):
+    """Signed hand-off from a hospice's care-platform site (see app/sso.py):
+    verify the hospice asserting this login actually holds the shared secret,
+    then log the visitor straight into that hospice's tenant-scoped account —
+    username and hospice slug are the same string for these three accounts
+    (see app/auth.py). Falls back to the ordinary login form on any mismatch
+    rather than erroring, so a stale/tampered link just prompts for a
+    password instead of failing outright.
+    """
+    safe_next = _safe_next(next)
+    user = auth.get_user(hospice) if hospice in HOSPICES and sso.verify(hospice, sig) else None
+    if user is None:
+        return RedirectResponse(f"/login?{urlencode({'next': safe_next})}", status_code=303)
+    request.session.clear()
+    request.session["username"] = user.username
+    return RedirectResponse(safe_next, status_code=303)
 
 
 @app.get("/login", response_class=HTMLResponse)
@@ -167,6 +199,15 @@ def logout(request: Request):
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request, patient: Optional[str] = None):
+    # A hospice's own custom domain (anchorpoint/cedarridge/thistlemoor
+    # .theslyon.com) is that hospice's mock EMR-adjacent care-platform site,
+    # not BetterMesh itself — serve its branded, login-free patient roster
+    # directly at "/" (rather than redirecting to /care-platform/) so the
+    # domain root itself is the correct page, not a bounce off it.
+    host = (request.headers.get("host") or "").split(":")[0]
+    if host in HOSTNAME_TO_SLUG:
+        return care_platform_patient_list(request)
+
     user = _current_user(request)
     if user is None:
         next_path = "/" + (f"?{urlencode({'patient': patient})}" if patient else "")
@@ -212,6 +253,7 @@ def all_dispatches(
             "equipment": EQUIPMENT,
             "selected_patient": patient_id,
             "selected_equipment": equipment_code,
+            "hospice_brand": _hospice_brand(user),
         },
     )
 
