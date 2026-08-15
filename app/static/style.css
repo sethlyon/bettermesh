@@ -12,6 +12,11 @@
   --risk-bg: #fdecec;
   --ok: #1f9d6b;
   --amber: #b9822f;
+  /* Separate from --navy, which is also used as a dark text color on cards
+     (equipment name, best-match vendor) — the topbar background needs to be
+     overridable per hospice without dragging those unrelated text colors
+     along with it. */
+  --header-bg: var(--navy);
 }
 
 * { box-sizing: border-box; }
@@ -28,7 +33,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 14px 24px;
-  background: var(--navy);
+  background: var(--header-bg);
   color: #fff;
 }
 
