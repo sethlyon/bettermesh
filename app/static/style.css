@@ -32,9 +32,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
+  height: 64px;
+  padding: 0 24px;
   background: var(--header-bg);
   color: #fff;
+  position: relative;
+  overflow: visible;
 }
 
 .brand-main { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fff; }
@@ -72,7 +75,7 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
 .toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
 .intake { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .intake-text { flex: 1; }
-.intake-equipment { width: 150px; }
+.intake-equipment .ms-toggle { min-width: 170px; }
 .intake-patient { width: 130px; }
 .intake-address { width: 190px; }
 .intake-target { width: 190px; }

@@ -348,7 +348,7 @@ def deceased(request: Request, patient_id: str = Form(...)):
 @app.post("/orders", response_class=HTMLResponse)
 def create_order(
     request: Request,
-    equipment_code: str = Form(...),
+    equipment_code: list[str] = Form(default=[]),
     patient_id: str = Form(...),
     target_date: str = Form(...),
     address: str = Form(""),
@@ -364,24 +364,29 @@ def create_order(
     except ValueError:
         target = None
 
-    if equipment_code not in EQUIPMENT or not patient_id or target is None:
-        flash = "Choose an equipment type, enter a patient ID, and set a target date/time."
+    codes = [c for c in equipment_code if c in EQUIPMENT]
+    if not codes or not patient_id or target is None:
+        flash = "Choose at least one equipment type, enter a patient ID, and set a target date/time."
         return templates.TemplateResponse("_board_inner.html", _board_ctx(request, user, flash))
 
-    order = Order(
-        id=store.next_id(),
-        patient_id=patient_id,
-        hospice=user.hospice or "Anchorpoint Hospice Partners",
-        equipment_code=equipment_code,
-        order_type="Admission",
-        status=ORDERED,
-        ordered_at=datetime.now(),
-        target_date=target,
-        address=address.strip(),
-    )
-    order.log.append("manual fallback entry — not yet on a discharge record")
-    store.add(order)
-    flash = f"Created {order.id}: {order.equipment_name} for {order.patient_id} — now open to the network."
+    created: list[str] = []
+    for code in codes:
+        order = Order(
+            id=store.next_id(),
+            patient_id=patient_id,
+            hospice=user.hospice or "Anchorpoint Hospice Partners",
+            equipment_code=code,
+            order_type="Admission",
+            status=ORDERED,
+            ordered_at=datetime.now(),
+            target_date=target,
+            address=address.strip(),
+        )
+        order.log.append("manual fallback entry — not yet on a discharge record")
+        store.add(order)
+        created.append(order.id)
+
+    flash = f"Created {', '.join(created)} for {patient_id} — now open to the network."
     return templates.TemplateResponse("_board_inner.html", _board_ctx(request, user, flash))
 
 

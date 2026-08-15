@@ -6,17 +6,51 @@
   <div class="toolbar">
     <form class="intake" hx-post="/orders" hx-target="#board" hx-swap="innerHTML"
           title="Manual fallback — for the rare need not already on a discharge record. Most orders arrive automatically from a hospice's own system; see Dispatch equipment on a patient's record there.">
-      <select class="intake-equipment" name="equipment_code" required>
-        <option value="" disabled selected>Equipment</option>
-        {% for code, name in equipment.items() %}
-        <option value="{{ code }}">{{ name }}</option>
-        {% endfor %}
-      </select>
+      <div class="ms-dropdown intake-equipment" id="intake-equip-ms">
+        <button type="button" class="ms-toggle" id="intake-equip-ms-toggle" aria-haspopup="listbox" aria-expanded="false">
+          Equipment
+        </button>
+        <div class="ms-panel" id="intake-equip-ms-panel" role="listbox" aria-labelledby="intake-equip-ms-toggle" hidden>
+          {% for code, name in equipment.items() %}
+          <label class="ms-option">
+            <input type="checkbox" name="equipment_code" value="{{ code }}">
+            {{ name }} <span class="ecode">{{ code }}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
       <input class="intake-patient" type="text" name="patient_id" placeholder="PT-88421" autocomplete="off" required>
       <input class="intake-address" type="text" name="address" placeholder="Delivery address" autocomplete="off">
       <input class="intake-target" type="datetime-local" name="target_date" required>
       <button type="submit">Place order</button>
     </form>
+    <script>
+      (function () {
+        var wrap = document.getElementById('intake-equip-ms');
+        var toggle = document.getElementById('intake-equip-ms-toggle');
+        var panel = document.getElementById('intake-equip-ms-panel');
+        var checks = panel.querySelectorAll('input[type=checkbox]');
+
+        function summarize() {
+          var checked = Array.prototype.filter.call(checks, function (c) { return c.checked; });
+          if (checked.length === 0) toggle.textContent = 'Equipment';
+          else if (checked.length === 1) toggle.textContent = checked[0].parentElement.textContent.trim();
+          else toggle.textContent = checked.length + ' selected';
+        }
+
+        toggle.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isOpen = !panel.hidden;
+          panel.hidden = isOpen;
+          toggle.setAttribute('aria-expanded', String(!isOpen));
+        });
+        document.addEventListener('click', function (e) {
+          if (!wrap.contains(e.target)) { panel.hidden = true; toggle.setAttribute('aria-expanded', 'false'); }
+        });
+        Array.prototype.forEach.call(checks, function (c) { c.addEventListener('change', summarize); });
+        summarize();
+      })();
+    </script>
     <form class="death" hx-post="/patients/deceased" hx-target="#board" hx-swap="innerHTML">
       <input class="death-input" type="text" name="patient_id" placeholder="PT-87950" autocomplete="off">
       <button type="submit" class="ghost">Mark deceased</button>
