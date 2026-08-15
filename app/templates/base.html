@@ -13,12 +13,7 @@
     .logout-form { margin: 0; }
     .logout-form button.ghost { color: #b7c6d8; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
     .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
-    /* Taken out of the topbar's normal flex flow (position: absolute) so a
-       big logo can't force the bar itself to grow tall — the bar stays a
-       fixed, compact height (see .topbar in style.css) and the logo simply
-       floats in front of it/over the page below. #board's extra top padding
-       reserves room so that overflow doesn't cover the toolbar underneath. */
-    .hospice-mark { height: 120px; width: auto; position: absolute; top: 8px; left: 24px; z-index: 5; }
+    .hospice-mark { height: 100px; width: auto; }
     {% if hospice_brand %}
     :root {
       --bg: {{ hospice_brand.bg }};
@@ -41,7 +36,6 @@
     .session-info, .roles a { color: var(--header-ink); }
     .logout-form button.ghost { color: var(--header-ink); border-color: {{ hospice_brand.accent }}88; }
     .logout-form button.ghost:hover { background: {{ hospice_brand.accent }}18; }
-    #board { padding-top: 84px; }
     {% endif %}
   </style>
 </head>

@@ -32,12 +32,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 100px;
   padding: 0 24px;
   background: var(--header-bg);
   color: #fff;
-  position: relative;
-  overflow: visible;
 }
 
 .brand-main { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fff; }

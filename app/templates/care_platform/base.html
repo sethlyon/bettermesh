@@ -25,22 +25,14 @@
     a { color: var(--accent); }
     header.topbar {
       display: flex; align-items: center; gap: 14px;
-      height: 64px;
+      height: 100px;
       padding: 0 28px;
       background: var(--panel);
       border-bottom: 1px solid var(--line);
-      position: relative;
-      overflow: visible;
     }
-    /* Taken out of the header's flex flow (position: absolute) so a big
-       logo can't force the bar itself to grow tall — same technique as
-       BetterMesh's own header. brand-block gets a left margin to clear it
-       instead of relying on flex gap, since the mark no longer takes up
-       flow space. */
-    .mark { height: 120px; width: auto; flex-shrink: 0; position: absolute; top: 8px; left: 28px; z-index: 5; }
-    .brand-block { margin-left: 250px; }
+    .mark { height: 100px; width: auto; flex-shrink: 0; }
     .brand-block .tagline { font-size: 12px; color: var(--muted); letter-spacing: 0.03em; text-transform: uppercase; }
-    main { max-width: 860px; margin: 0 auto; padding: 84px 28px 28px; }
+    main { max-width: 860px; margin: 0 auto; padding: 28px; }
     .panel {
       background: var(--panel);
       border: 1px solid var(--line);
