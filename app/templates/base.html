@@ -7,12 +7,13 @@
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
   <link rel="stylesheet" href="/static/style.css">
   <style>
+    .brand { display: flex; align-items: center; gap: 14px; }
     .roles { display: flex; align-items: center; gap: 12px; }
     .session-info { color: #b7c6d8; font-size: 14px; }
     .logout-form { margin: 0; }
     .logout-form button.ghost { color: #b7c6d8; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
     .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
-    .hospice-mark { height: 26px; width: auto; border-radius: 4px; background: #fff; padding: 2px 4px; }
+    .hospice-mark { height: 48px; width: auto; border-radius: 6px; background: #fff; padding: 5px 10px; }
     {% if hospice_brand %}
     :root {
       --bg: {{ hospice_brand.bg }};
@@ -22,18 +23,28 @@
       --muted: {{ hospice_brand.muted }};
       --accent: {{ hospice_brand.accent }};
       --accent-dark: {{ hospice_brand.accent }};
+      /* The topbar itself is painted with --navy, not --accent, so it has to
+         be overridden separately for the hospice's palette to actually reach
+         the one element every other page load starts with. --header-ink is
+         the hospice's own "text on accent" color, so header text stays
+         readable once the header background is no longer the fixed navy. */
+      --navy: {{ hospice_brand.accent }};
+      --header-ink: {{ hospice_brand.accent_ink }};
     }
+    .brand-sub, .session-info, .roles a { color: var(--header-ink); }
+    .logout-form button.ghost { color: var(--header-ink); border-color: {{ hospice_brand.accent_ink }}88; }
+    .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.16); }
     {% endif %}
   </style>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <span class="brand-main">BetterMesh</span>
       {% if hospice_brand %}
       <img class="hospice-mark" src="/static/logos/{{ hospice_brand.logo }}" alt="{{ hospice_brand.name }}">
-      <span class="brand-sub">{{ hospice_brand.name }}</span>
+      <span class="brand-sub">{{ hospice_brand.name }} &middot; BetterMesh Network</span>
       {% else %}
+      <span class="brand-main">BetterMesh</span>
       <span class="brand-sub">by BetterRX</span>
       {% endif %}
     </div>
