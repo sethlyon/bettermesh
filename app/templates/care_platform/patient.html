@@ -124,6 +124,7 @@
   var SECRET = {{ webhook_secret | tojson }};
   var PATIENT_ID = {{ patient.id | tojson }};
   var HOSPICE_NAME = {{ hospice.name | tojson }};
+  var PATIENT_FIRST_NAME = {{ patient.name.split(' ')[0] | tojson }};
   var PATIENT_ADDRESS = {{ patient.address | tojson }};
   var PATIENT_PHONE = {{ patient.contact_phone | tojson }};
   var STATUS_URL = {{ status_url | tojson }};
@@ -190,7 +191,7 @@
     if (!codes.length || !target) return;
     var btn = this; btn.disabled = true; btn.textContent = 'Dispatching…';
     post('/webhook/pre-discharge-order', {
-      patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
+      patient_id: PATIENT_ID, patient_first_name: PATIENT_FIRST_NAME, hospice: HOSPICE_NAME,
       order_type: HAS_URGENT ? 'STAT' : 'Admission',
       equipment_codes: codes, target_date: target,
       address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
@@ -218,7 +219,7 @@
     if (!codes.length || !target) return;
     var btn = this; btn.disabled = true; btn.textContent = 'Submitting…';
     post('/webhook/pre-discharge-order', {
-      patient_id: PATIENT_ID, hospice: HOSPICE_NAME,
+      patient_id: PATIENT_ID, patient_first_name: PATIENT_FIRST_NAME, hospice: HOSPICE_NAME,
       order_type: 'Admission', equipment_codes: codes, target_date: target,
       address: PATIENT_ADDRESS, contact_phone: PATIENT_PHONE,
       consent_on_file: document.getElementById('menu-consent').checked

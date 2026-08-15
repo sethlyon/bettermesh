@@ -189,6 +189,7 @@ def mark_deceased(patient_id: str) -> tuple[int, list[str]]:
             pickup = Order(
                 id=store.next_id(),
                 patient_id=patient_id,
+                patient_first_name=order.patient_first_name,
                 hospice=order.hospice,
                 equipment_code=order.equipment_code,
                 order_type="Pickup",

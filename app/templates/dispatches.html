@@ -90,7 +90,7 @@
           onclick="window.location='/?patient={{ o.patient_id }}'"
           onkeydown="if (event.key === 'Enter') window.location='/?patient={{ o.patient_id }}';">
         <td class="mono">{{ o.id }}</td>
-        <td>{{ o.patient_id }}</td>
+        <td>{% if o.patient_first_name %}{{ o.patient_first_name }} · {% endif %}{{ o.patient_id }}</td>
         <td>{{ o.hospice }}</td>
         <td>{{ o.equipment_name }} <span class="ecode">{{ o.equipment_code }}</span></td>
         <td>

@@ -58,6 +58,17 @@
       padding: 8px 10px; background: #fff; color: var(--ink);
     }
     .footer-note { margin-top: 24px; font-size: 12px; color: var(--muted); text-align: center; }
+    .qr-corner {
+      position: fixed; right: 14px; bottom: 14px; z-index: 40;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    }
+    .qr-corner img { width: 88px; height: 88px; display: block; }
+    .qr-corner span { font-size: 11px; line-height: 1.3; color: var(--muted); max-width: 92px; }
   </style>
 </head>
 <body>
@@ -71,5 +82,9 @@
     {% block content %}{% endblock %}
   </main>
   <p class="footer-note">Synthetic demo data — no real patient information. Part of the BetterMesh integration demo.</p>
+  <div class="qr-corner">
+    <img src="{{ qr_for_request(request) }}" alt="QR code to this page" width="88" height="88">
+    <span>Scan to open this page</span>
+  </div>
 </body>
 </html>

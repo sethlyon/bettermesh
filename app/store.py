@@ -35,6 +35,7 @@ _SCHEMA = """
 CREATE TABLE IF NOT EXISTS orders (
     id TEXT PRIMARY KEY,
     patient_id TEXT NOT NULL,
+    patient_first_name TEXT NOT NULL DEFAULT '',
     hospice TEXT NOT NULL,
     equipment_code TEXT NOT NULL,
     order_type TEXT NOT NULL,
@@ -55,12 +56,13 @@ CREATE TABLE IF NOT EXISTS orders (
 
 _UPSERT_SQL = """
 INSERT INTO orders (
-    id, patient_id, hospice, equipment_code, order_type, status,
+    id, patient_id, patient_first_name, hospice, equipment_code, order_type, status,
     ordered_at, target_date, vendor, eta, is_pickup, log,
     address, contact_phone, equipment_notes, consent_on_file, external_ref
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     patient_id=excluded.patient_id,
+    patient_first_name=excluded.patient_first_name,
     hospice=excluded.hospice,
     equipment_code=excluded.equipment_code,
     order_type=excluded.order_type,
@@ -101,6 +103,7 @@ def _row_to_order(row: tuple) -> Order:
     (
         id_,
         patient_id,
+        patient_first_name,
         hospice,
         equipment_code,
         order_type,
@@ -120,6 +123,7 @@ def _row_to_order(row: tuple) -> Order:
     return Order(
         id=id_,
         patient_id=patient_id,
+        patient_first_name=patient_first_name,
         hospice=hospice,
         equipment_code=equipment_code,
         order_type=order_type,
@@ -142,6 +146,7 @@ def _order_to_params(order: Order) -> tuple:
     return (
         order.id,
         order.patient_id,
+        order.patient_first_name,
         order.hospice,
         order.equipment_code,
         order.order_type,
@@ -203,6 +208,7 @@ def seed() -> None:
         Order(
             id="DME-10231",
             patient_id="PT-88421",
+            patient_first_name="Thomas",
             hospice="Anchorpoint Hospice Partners",
             equipment_code="E0250",
             order_type="Admission",
@@ -216,6 +222,7 @@ def seed() -> None:
         Order(
             id="DME-10198",
             patient_id="PT-88190",
+            patient_first_name="Nadia",
             hospice="Cedar Ridge Hospice & Home Care",
             equipment_code="E1130",
             order_type="Routine",
@@ -231,6 +238,7 @@ def seed() -> None:
         Order(
             id="DME-10305",
             patient_id="PT-88502",
+            patient_first_name="Carol",
             hospice="Anchorpoint Hospice Partners",
             equipment_code="E0601",
             order_type="STAT",
@@ -247,6 +255,7 @@ def seed() -> None:
         Order(
             id="DME-10087",
             patient_id="PT-87950",
+            patient_first_name="Agnes",
             hospice="Thistlemoor Hospice",
             equipment_code="E0250",
             order_type="Admission",
@@ -263,6 +272,7 @@ def seed() -> None:
         Order(
             id="DME-10412",
             patient_id="PT-87720",
+            patient_first_name="Earl",
             hospice="Cedar Ridge Hospice & Home Care",
             equipment_code="E0250",
             order_type="Pickup",
@@ -278,6 +288,7 @@ def seed() -> None:
         Order(
             id="DME-10500",
             patient_id="PT-88710",
+            patient_first_name="Harold",
             hospice="Anchorpoint Hospice Partners",
             equipment_code="E0601",
             order_type="STAT",

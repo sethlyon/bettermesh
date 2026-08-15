@@ -1,17 +1,19 @@
 :root {
-  /* BetterRX-inspired: clinical navy + teal on light surfaces */
-  --bg: #eef3f8;
+  /* BetterRX brand palette (Brandfetch: Ebony Clay / Silver / Burnt Sienna),
+     extended with the semantic colors from BetterRX's own bounty-brief
+     document — same --ink value (#24333F) confirms it's the same system. */
+  --bg: #FBFAF8;
   --panel: #ffffff;
-  --line: #dbe4ee;
-  --text: #10263d;
-  --muted: #64748b;
-  --navy: #0b2e4f;
-  --accent: #0aa3a0;
-  --accent-dark: #08807e;
-  --risk: #d64550;
-  --risk-bg: #fdecec;
-  --ok: #1f9d6b;
-  --amber: #b9822f;
+  --line: #DEE2E5;
+  --text: #24333F;
+  --muted: #55636D;
+  --navy: #24333F;
+  --accent: #EF7869;
+  --accent-dark: #A75449;
+  --risk: #EB7870;
+  --risk-bg: #FCEEED;
+  --ok: #71BA4F;
+  --amber: #528DC1;
   /* Separate from --navy, which is also used as a dark text color on cards
      (equipment name, best-match vendor) — the topbar background needs to be
      overridable per hospice without dragging those unrelated text colors
@@ -23,10 +25,12 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
   color: var(--text);
 }
+
+h1, h2, h3 { font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
 .topbar {
   display: flex;
@@ -38,11 +42,8 @@ body {
   color: #fff;
 }
 
-.brand-main { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; color: #fff; }
-.brand-sub { font-size: 13px; color: var(--accent); margin-left: 8px; }
-
 .roles a {
-  color: #b7c6d8;
+  color: #CCCCCC;
   text-decoration: none;
   padding: 8px 14px;
   border-radius: 8px;
@@ -57,13 +58,13 @@ main { padding: 24px; max-width: 1100px; margin: 0 auto; }
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 18px;
-  box-shadow: 0 1px 3px rgba(11, 46, 79, 0.06);
+  box-shadow: 0 1px 3px rgba(36, 51, 63, 0.06);
 }
 
 .flash {
-  background: #e6f6f4;
-  border: 1px solid #a6e0da;
-  color: var(--accent-dark);
+  background: #F0F8ED;
+  border: 1px solid #BFDFAF;
+  color: #3D7A2E;
   padding: 10px 14px;
   border-radius: 8px;
   margin-bottom: 14px;
@@ -90,7 +91,7 @@ input[type=text] {
   border-radius: 8px;
   font-size: 14px;
 }
-input[type=text]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(10, 163, 160, 0.15); }
+input[type=text]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(239, 120, 105, 0.18); }
 
 button {
   background: var(--accent);
@@ -104,9 +105,9 @@ button {
 }
 button:hover { background: var(--accent-dark); }
 button.ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); }
-button.ghost:hover { background: #f1f5f9; }
+button.ghost:hover { background: #F5F3F2; }
 button.redispatch { background: var(--risk); }
-button.redispatch:hover { background: #b83842; }
+button.redispatch:hover { background: #C0625B; }
 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .ecode { color: var(--muted); font-size: 12px; margin-left: 4px; }
@@ -116,7 +117,7 @@ button.redispatch:hover { background: #b83842; }
   display: inline-block;
   padding: 3px 9px;
   border-radius: 999px;
-  background: #eaf0f6;
+  background: #F1F2F3;
   color: var(--navy);
   font-size: 12px;
   font-weight: 500;
@@ -124,7 +125,7 @@ button.redispatch:hover { background: #b83842; }
 .badge-risk { background: var(--risk); color: white; }
 .badge-pickup { background: var(--amber); color: white; }
 .badge-ok { background: var(--ok); color: white; }
-.badge-open { background: #dbeceb; color: var(--accent-dark); }
+.badge-open { background: #FDEEED; color: var(--accent-dark); }
 
 .log { color: var(--muted); font-size: 12px; font-style: italic; }
 
@@ -173,7 +174,7 @@ button.redispatch:hover { background: #b83842; }
 .empty { color: var(--muted); font-size: 13px; font-style: italic; }
 
 .card {
-  background: #fbfdff;
+  background: #FDFCFB;
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 12px 14px;
@@ -188,8 +189,9 @@ button.redispatch:hover { background: #b83842; }
 .card-actions { margin-top: 10px; }
 .card-actions button { width: 100%; }
 .card-actions button.confirm { background: var(--amber); }
-.card-actions button.confirm:hover { background: #9c6d24; }
-.card-actions button.warn { background: #c9922f; }
+.card-actions button.confirm:hover { background: #3D6990; }
+.card-actions button.warn { background: #F8A76F; }
+.card-actions button.warn:hover { background: #BA7D53; }
 
 /* ---- Hospice grouped cards (vertical list) ---- */
 .group-head {
@@ -206,7 +208,7 @@ button.redispatch:hover { background: #b83842; }
 .column .group-head { margin-top: 0; }
 .hgrid { display: flex; flex-direction: column; gap: 10px; }
 .hcard {
-  background: #fbfdff;
+  background: #FDFCFB;
   border: 1px solid var(--line);
   border-left: 3px solid var(--line);
   border-radius: 4px;
@@ -227,8 +229,8 @@ button.redispatch:hover { background: #b83842; }
   animation: hcard-pulse 1.6s ease-out 2;
 }
 @keyframes hcard-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(10, 163, 160, 0.45); }
-  100% { box-shadow: 0 0 0 14px rgba(10, 163, 160, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(239, 120, 105, 0.45); }
+  100% { box-shadow: 0 0 0 14px rgba(239, 120, 105, 0); }
 }
 .hcard-rec { font-size: 12px; margin-bottom: 10px; color: var(--muted); }
 .hcard-rec strong { color: var(--navy); }
@@ -249,7 +251,7 @@ button.redispatch:hover { background: #b83842; }
   font-weight: 500;
   text-decoration: none;
 }
-.btn-link:hover { background: #f1f5f9; }
+.btn-link:hover { background: #F5F3F2; }
 
 .filters {
   display: flex;
@@ -280,12 +282,12 @@ button.redispatch:hover { background: #b83842; }
   border: 1px solid var(--line);
   border-radius: 6px;
   font-size: 14px;
-  background: #fff url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2364748b'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
+  background: #fff url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%2355636D'%3E%3Cpath d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%2355636D' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
   color: var(--text);
   font-weight: 400;
   cursor: pointer;
 }
-.ms-toggle:hover { background-color: #f8fafc; }
+.ms-toggle:hover { background-color: #F7F6F5; }
 .ms-panel {
   position: absolute;
   top: calc(100% + 4px);
@@ -297,7 +299,7 @@ button.redispatch:hover { background: #b83842; }
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(11, 46, 79, 0.12);
+  box-shadow: 0 8px 20px rgba(36, 51, 63, 0.12);
   padding: 6px;
 }
 .ms-option {
@@ -308,7 +310,7 @@ button.redispatch:hover { background: #b83842; }
   border-radius: 5px;
   cursor: pointer;
 }
-.ms-option:hover { background: #f1f5f9; }
+.ms-option:hover { background: #F5F3F2; }
 
 table.dispatch-table { width: 100%; border-collapse: collapse; }
 table.dispatch-table th, table.dispatch-table td {
@@ -322,8 +324,8 @@ table.dispatch-table th {
 }
 table.dispatch-table tr.at-risk { background: var(--risk-bg); }
 table.dispatch-table tr.dispatch-row { cursor: pointer; }
-table.dispatch-table tr.dispatch-row:hover { background: #f1f5f9; }
-table.dispatch-table tr.dispatch-row.at-risk:hover { background: #fbdada; }
+table.dispatch-table tr.dispatch-row:hover { background: #F5F3F2; }
+table.dispatch-table tr.dispatch-row.at-risk:hover { background: #FBE6E5; }
 table.dispatch-table tr.dispatch-row:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 

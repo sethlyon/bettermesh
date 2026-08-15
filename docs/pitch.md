@@ -53,8 +53,8 @@ Two moments hospices don't control but always get blamed for:
 
 Both share one root cause: **there is no shared, reliable signal of delivery
 status between the hospice and the vendor.** BetterRX's own discovery flagged
-*delivery visibility*, not DME ownership, as the higher-leverage problem. We agree —
-and we go one step further: visibility alone tells you you're about to fail.
+*delivery visibility*, not DME ownership, as the higher-leverage problem. I agree —
+and I go one step further: visibility alone tells you you're about to fail.
 BetterMesh does something about it.
 
 ---
@@ -81,7 +81,7 @@ has 90% of an order but no bed, BetterMesh can split the bed line-item to a seco
 contracted vendor as its own clean order, both delivering to the patient's home.
 Two vendors, two clean claims, one patient — **no inter-vendor physical handoff**,
 which is what would otherwise create a chain-of-custody and billing-fraud problem.
-We show this as a capability, not the core demo, because it's where the
+I show this as a capability, not the core demo, because it's where the
 compliance story needs a real BetterRX conversation.
 
 **The upgrade that makes risk trivial — shared inventory (two-tier):** Risk today
@@ -94,7 +94,11 @@ BetterMesh runs a two-tier model that works either way:
   who has every line-item in stock. Dispatch is a rules problem: prefer a single
   contracted vendor who can fulfill the *complete* order, closest and soonest; only
   if no single vendor is complete does it expose the missing line-items to the rest
-  of the network. No prediction needed — no AI needed here, and we say so.
+  of the network. No prediction needed — no AI needed here, and I say so. (Cost
+  isn't wired into that ranking in the current code — see the roadmap below. Once
+  vendor integrations and inventory disclosure are live, cost becomes a *secondary*
+  signal: a tiebreaker among the vendors who can already fulfill the order in
+  time, not the primary sort.)
 - **Tier 2 — non-integrated vendors (no inventory feed).** BetterMesh falls back
   to the ETA-vs-window risk model and confirmation-broadcast. This is where a
   predictive risk score earns its place, flagging likely misses before an ETA even
@@ -111,14 +115,23 @@ and confirms hospices are typically locked into one primary vendor (maybe a
 backup) with no real choice today; opening that up is explicitly what they want.
 That's Tier 1/Tier 2 and the "best match" vendor ranking (confidence first, price
 second — DME pricing is vendor-set, not insurance-set, so it has to be modeled
-per-vendor) almost exactly. Worth saying in the room: we didn't reverse-engineer
+per-vendor) almost exactly. Worth saying in the room: I didn't reverse-engineer
 this from the brief, it's independently the same shape they described unprompted.
 
 ---
 
-## What we build (the vertical slice)
+## What I build (the vertical slice)
 
 A single web app with two role-based views over one shared order timeline.
+
+**It already works with zero integration.** Both roles reach BetterMesh the same
+way today — a login. A hospice case manager can log in and create and dispatch an
+order by hand, no EMR wiring required. A DME dispatcher can log in and see exactly
+the orders and open network broadcasts relevant to their vendor, and accept them
+the same way. The pre-discharge webhook and the deceased-status event (below) make
+the hospice side faster and more automatic, but they're an upgrade to an
+already-functional product, not a prerequisite for it — BetterRX could sell and
+deploy this to a hospice and its vendors this week, on logins alone.
 
 ### Hospice case manager view
 - **Pre-discharge equipment dispatch.** The patient's DME need already exists in
@@ -137,7 +150,7 @@ A single web app with two role-based views over one shared order timeline.
 BetterRX names three hospice-side personas (admissions nurse, case manager,
 director of nursing); the demo models the **case manager** persona specifically —
 the other two are the same board with a different permission/approval scope, not
-a different product, and we say so rather than pretend one login covers everyone.
+a different product, and I say so rather than pretend one login covers everyone.
 
 ### DME dispatcher view
 - Inbound queue of orders and re-broadcasts, accept / confirm ETA.
@@ -159,7 +172,7 @@ a different product, and we say so rather than pretend one login covers everyone
 
 ## Where AI earns its place (and where it doesn't)
 
-The brief demands we justify AI over a rules-based baseline. The honest answer for
+The brief demands I justify AI over a rules-based baseline. The honest answer for
 this product is blunter than a table of AI/no-AI rows: **the primary application
 doesn't need AI at all.** Routing an order to the right vendor in a known, closed
 network — and re-routing it when one link is running late — is a rules problem,
@@ -167,20 +180,25 @@ not a prediction problem.
 
 | Capability | Approach | Why |
 |---|---|---|
-| Order intake | **Integration, not AI.** The equipment need already exists as structured data in BetterRX (physician order / care plan line-item). We read it, we don't infer it. | There's no ambiguity for AI to resolve once the data's already structured at the source — that's the whole point of the pivot away from natural-language intake. |
+| Order intake | **Integration, not AI.** The equipment need already exists as structured data in BetterRX (physician order / care plan line-item). I read it, I don't infer it. | There's no ambiguity for AI to resolve once the data's already structured at the source — that's the whole point of the pivot away from natural-language intake. |
 | Dispatch, Tier 1 (inventory shared) | **Rules only.** No AI. | With live inventory, "who can fulfill the complete order, closest and soonest" is deterministic. |
 | At-risk detection, Tier 2 (no inventory) | **Rules only** — `ETA vs. discharge window`. No AI. | A threshold catches the miss cleanly. Reaching for a model to do a comparison would be the "AI for AI's sake" failure mode, not a strength. |
 | Pickup / dispatch routing | **Rules only.** No AI. | It's a confirmation broadcast, not a prediction. |
 
-**Where AI genuinely earns its place is post-launch, on the vendor side — not in
-the MVP.** Once real dispatch volume flows through the network, BetterMesh can
-surface aggregate demand patterns back to in-network vendors: which equipment
-types actually drive dispatch volume, so a vendor can stock ahead of demand instead
-of reacting order-by-order. That's a real forecasting problem, and the input data
-literally doesn't exist until the network has volume — which is exactly why we
-don't fake a version of it for the demo. It's also the vendor-side value-add that
-makes "integrate with BetterMesh" a better deal than staying manual: preferred
-dispatch today, better stocking decisions tomorrow.
+**Where AI genuinely earns its place is post-launch — not in the MVP — and it cuts
+both directions, not just the vendor side.** Once real dispatch volume flows
+through the network, BetterMesh can surface aggregate demand patterns back to
+in-network vendors: which equipment types actually drive dispatch volume, so a
+vendor can stock ahead of demand instead of reacting order-by-order. The same
+model runs the other way for hospices: flag when a hospice's own contracted
+vendor network is trending toward not being able to keep up with projected
+demand, so the hospice gets advance warning to add or diversify vendor coverage
+*before* it becomes a missed discharge, not after. Both are a real forecasting
+problem, and the input data literally doesn't exist until the network has volume
+— which is exactly why I don't fake a version of either for the demo. It's also
+the two-sided value-add that makes "integrate with BetterMesh" a better deal than
+staying manual: preferred dispatch and better stocking decisions for vendors,
+earlier warning of network risk for hospices.
 
 Cost envelope for the MVP: zero inference cost. Every dispatch decision is a rule
 evaluated against data already on hand.
@@ -234,14 +252,14 @@ needs, not just the buyer relationship.**
     and "instant pickup" claims airtight; if either lags, trigger off the EMR
     instead. Same wire, different source.
 - **Vendor inventory (Tier 1):** a simple inventory API/webhook per vendor (SKU →
-  E-code → on-hand count). For the demo we seed two integrated vendors with stock
+  E-code → on-hand count). For the demo I seed two integrated vendors with stock
   and leave one as a Tier 2 fallback, so both paths show on screen.
 - **EMR:** BetterRX's own team directly named **HomeCare HomeBase (HCHB)**,
   **MatrixCare**, and **WellSky** as the relevant home-hospice EMRs (kickoff Q&A) —
   lead with HCHB, which has a purpose-built DME integration layer for automated
   ordering + real-time patient status, and show the order/patient record shape
   crossing the boundary. Axxess follows the same partner-connection pattern but
-  wasn't named by BetterRX directly — flag it as our own addition, not a confirmed
+  wasn't named by BetterRX directly — flag it as my own addition, not a confirmed
   one (there is no shared DME ordering standard regardless — HCPCS E-codes for
   identity, ANSI X12 837 for claims).
 
@@ -273,7 +291,7 @@ forecasting), told rather than faked on screen.
 
 ---
 
-## Why we beat today's market (differentiation = 30%)
+## Why I beat today's market (differentiation = 30%)
 
 Today: vendor-specific portal, phone, or fax; tracking (if any) trapped in the
 vendor's own software; the fallback vendor is a manual phone tree. BetterMesh:
@@ -310,10 +328,14 @@ Why this is a SaaS line BetterRX could own, not just a hackathon toy:
   (per-patient-day or per-seat SaaS); charge or upsell vendors for preferred
   dispatch and inventory integration — and, once the network has volume, for
   AI-driven demand forecasting that helps them stock ahead instead of reacting.
+  Sell hospices the mirror image of that same forecast: early warning when their
+  own contracted vendor network is trending toward a capacity shortfall.
   The network gets more valuable as both sides join — classic marketplace flywheel.
-- **Low integration lift to start.** Tier 2 needs nothing from vendors, so BetterRX
-  can sell and deploy against hospices immediately, then convert vendors to Tier 1
-  over time for the inventory upside.
+- **Zero integration lift to start.** The product is fully usable via login alone
+  — hospices dispatch by hand, vendors accept by hand — before any EMR or
+  inventory integration exists. BetterRX can sell and deploy against hospices and
+  their vendors immediately; Tier 2 → Tier 1 integration work only sharpens what's
+  already working, it doesn't unlock it.
 - **Defensible data asset.** Every order, ETA, and outcome flowing through the
   network becomes proprietary reliability data — vendor scorecards, market-level
   benchmarks, and better risk models no single vendor or EMR can replicate.
@@ -322,7 +344,7 @@ Why this is a SaaS line BetterRX could own, not just a hackathon toy:
   unconfirmed by them) rather than fighting them, so BetterRX is the connective
   tissue, not a rip-and-replace.
 
-We present BetterMesh as a functional prototype of that SaaS product, not a
+I present BetterMesh as a functional prototype of that SaaS product, not a
 one-off — the demo is the thin slice, the pitch is the wedge.
 
 ---
@@ -331,9 +353,9 @@ one-off — the demo is the thin slice, the pitch is the wedge.
 
 - **Does risk-triggered re-dispatch match reality?** Need a hospice operator to
   confirm what actually happens today when a primary vendor is going to be late.
-  (We have direct access to a hospice owner to pressure-test this.)
-- **Is there a DME vendor we can talk to?** The brief is hospice-heavy; the
-  dispatcher-side workflow is our biggest assumption.
+  (I have direct access to a hospice owner to pressure-test this.)
+- **Is there a DME vendor I can talk to?** The brief is hospice-heavy; the
+  dispatcher-side workflow is my biggest assumption.
 - **Contracting constraints on re-dispatch.** Are all contracted vendors equally
   billable for any order, or are there per-vendor equipment/coverage limits that
   constrain who a broadcast can go to?
@@ -346,12 +368,13 @@ one-off — the demo is the thin slice, the pitch is the wedge.
 
 ---
 
-## Team edge
+## My edge
 
 - Direct Supply background (senior-living medical equipment supply chain) — the
   vendor/logistics side of this exact category.
 - A hospice owner next door to validate workflow and vouch for authenticity.
-- Both sides of the gap BetterRX is trying to close, in one team.
+- Both sides of the gap BetterRX is trying to close, held by one builder — solo,
+  not split across a team.
 
 ---
 
@@ -403,8 +426,13 @@ pickup* end to end on the brief's synthetic data.
 ### Won't-have (roadmap, say it out loud, don't build it)
 - Order splitting / multi-vendor fulfillment (compliance story not demo-ready).
 - Real EMR/eRx integration (mock the webhook shape + a diagram; brief allows this).
-- AI-driven vendor inventory demand forecasting — the real AI story, but it needs
-  live network volume that doesn't exist until after launch.
+- AI-driven demand forecasting, both directions (vendor-side stocking, hospice-side
+  network-capacity risk) — the real AI story, but it needs live network volume
+  that doesn't exist until after launch.
+- Cost-based tie-breaking among multiple capable vendors — not in the code today.
+  Once vendor integrations and inventory disclosure are live, cost becomes a
+  secondary ranking signal, used only to break ties among vendors who can already
+  fulfill the order in time.
 - Auth, real accounts, mobile (a Hospice/Dispatcher view toggle is enough).
 
 ### Build order (dependency-aware)

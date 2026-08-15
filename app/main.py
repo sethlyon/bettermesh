@@ -20,7 +20,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
-from . import auth, dispatch, sso, store
+from . import auth, dispatch, qr, sso, store
 from .care_platform import patient_list as care_platform_patient_list
 from .care_platform import router as care_platform_router
 from .care_platform_data import HOSPICES, HOSTNAME_TO_SLUG
@@ -35,6 +35,7 @@ from .models import (
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+templates.env.globals["qr_for_request"] = qr.qr_for_request
 
 app = FastAPI(title="BetterMesh by BetterRX")
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
@@ -350,6 +351,7 @@ def create_order(
     request: Request,
     equipment_code: list[str] = Form(default=[]),
     patient_id: str = Form(...),
+    patient_first_name: str = Form(""),
     target_date: str = Form(...),
     address: str = Form(""),
 ):
@@ -374,6 +376,7 @@ def create_order(
         order = Order(
             id=store.next_id(),
             patient_id=patient_id,
+            patient_first_name=patient_first_name.strip(),
             hospice=user.hospice or "Anchorpoint Hospice Partners",
             equipment_code=code,
             order_type="Admission",
@@ -411,6 +414,7 @@ def _order_json(o: Order) -> dict:
         "eta": o.eta.isoformat() if o.eta else None,
         "at_risk": o.at_risk,
         "is_pickup": o.is_pickup,
+        "patient_first_name": o.patient_first_name,
         "address": o.address,
         "contact_phone": o.contact_phone,
         "equipment_notes": o.equipment_notes,
@@ -473,6 +477,7 @@ async def webhook_pre_discharge_order(request: Request):
 
     body = await request.json()
     patient_id = str(body.get("patient_id", "")).strip().upper()
+    patient_first_name = str(body.get("patient_first_name", "")).strip()
     hospice = str(body.get("hospice", "")).strip()
     order_type = str(body.get("order_type", "Admission")).strip() or "Admission"
     equipment_codes = body.get("equipment_codes") or []
@@ -525,6 +530,7 @@ async def webhook_pre_discharge_order(request: Request):
         order = Order(
             id=store.next_id(),
             patient_id=patient_id,
+            patient_first_name=patient_first_name,
             hospice=hospice,
             equipment_code=code,
             order_type=order_type,

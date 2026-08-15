@@ -75,6 +75,10 @@ class Order:
     # who to call. Deliberately not clinical — no diagnosis, no care level.
     # equipment_notes covers the one case where a little clinical detail earns
     # its way in: sizing (bed weight capacity, wheelchair width, O2 flow rate).
+    # First name only, not full legal name — enough that a driver or
+    # dispatcher can address the person, without carrying more identity than
+    # the delivery itself needs.
+    patient_first_name: str = ""
     address: str = ""
     contact_phone: str = ""
     equipment_notes: str = ""

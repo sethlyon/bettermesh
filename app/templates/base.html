@@ -5,15 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BetterMesh by BetterRX</title>
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
   <style>
     .brand { display: flex; align-items: center; gap: 14px; }
     .roles { display: flex; align-items: center; gap: 12px; }
-    .session-info { color: #b7c6d8; font-size: 14px; }
+    .session-info { color: #CCCCCC; font-size: 14px; }
     .logout-form { margin: 0; }
-    .logout-form button.ghost { color: #b7c6d8; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
+    .logout-form button.ghost { color: #CCCCCC; border-color: rgba(255, 255, 255, 0.3); background: transparent; }
     .logout-form button.ghost:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
     .hospice-mark { height: 100px; width: auto; }
+    .qr-corner {
+      position: fixed; right: 14px; bottom: 14px; z-index: 40;
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 10px;
+      padding: 8px 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+    }
+    .qr-corner img { width: 88px; height: 88px; display: block; }
+    .qr-corner span { font-size: 11px; line-height: 1.3; color: #55636D; max-width: 92px; }
     {% if hospice_brand %}
     :root {
       --bg: {{ hospice_brand.bg }};
@@ -45,8 +59,7 @@
       {% if hospice_brand %}
       <img class="hospice-mark" src="/static/logos/{{ hospice_brand.logo }}" alt="{{ hospice_brand.name }}">
       {% else %}
-      <span class="brand-main">BetterMesh</span>
-      <span class="brand-sub">by BetterRX</span>
+      <img class="hospice-mark" src="/static/logos/bettermesh.png" alt="BetterMesh by BetterRX">
       {% endif %}
     </div>
     {% if user %}
@@ -64,6 +77,11 @@
   <main id="board" data-highlight-patient="{{ highlight_patient or '' }}">
     {% block board %}{% endblock %}
   </main>
+
+  <div class="qr-corner">
+    <img src="{{ qr_for_request(request) }}" alt="QR code to this page" width="88" height="88">
+    <span>Scan to open this page</span>
+  </div>
 
   <script>
     (function () {

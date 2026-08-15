@@ -19,7 +19,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from . import sso
+from . import qr, sso
 from .care_platform_data import (
     DEFAULT_HOSPICE_SLUG,
     HOSPICES,
@@ -34,6 +34,7 @@ router = APIRouter(prefix="/care-platform")
 
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+templates.env.globals["qr_for_request"] = qr.qr_for_request
 
 # In-memory inbox of BetterMesh -> hospice push notifications (see
 # app/notifications.py), keyed by hospice slug. Newest-last; only the most
